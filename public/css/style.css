@@ -1,0 +1,432 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;700&display=swap');
+/******************** VARs ********************/
+:root{
+    --white: #fdfdfd;
+    --grey: #c4c4c4;
+    --black: #111;
+
+    --red: #c15757;
+    --red-pale: #f67e7e;
+
+    --orange: #e26e1f;
+    --orange-pale: #f6af7e;
+
+    --yellow: #e4a908;
+    --yellow-pale: #f1e896;
+
+    --font: "Poppins";
+    --font-light: 200;
+    --font-bold: 700;
+
+    --font-36: clamp(1.5rem, 5vw, 2rem);
+    --font-24: clamp(1.25rem, 3.5vw, 1.5rem);
+    --font-18: clamp(0.8rem, 2.5vw, 1.1rem);
+    --font-14: clamp(0.75rem, 2vw, 1rem);
+    --font-12: clamp(0.7rem, 2vw, 0.9rem);
+}
+
+/******************** CSS ********************/
+
+/*************** GENERALS ***************/
+
+*{
+    padding:0;
+    margin:0;
+}
+
+html, body{
+    height:100%;
+    width:100%;
+    background: var(--white);
+    font-family: var(--font);
+}
+
+a:hover{
+    text-decoration: none;
+}
+
+h1, h3, h6{font-weight: var(--font-bold);padding: 10px 0 !important;}
+
+
+/*************** NAV ***************/
+nav{
+    padding: 15px 0;
+    height: auto;
+    text-align: center;
+}
+
+nav ul{
+    align-items: center;
+}
+
+nav ul li{
+    list-style: none;
+}
+
+nav a{
+    color: var(--black);
+    font-weight: var(--font-bold);
+    font-size: var(--font-18);
+}
+
+nav img{
+    width: 80%;
+    height: auto;
+}
+
+.menu-button{
+    display: block;
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    line-height: 50px;
+    background-color: var(--orange);
+    color: var(--white);
+}
+
+footer hr{
+    background-color: var(--black);
+}
+
+footer p{
+    align-self: center;
+}
+
+/*************** HOME PAGE ***************/
+
+header > .row > div{
+    padding: 20px 0;
+    height: 400px;
+    width: 100%;
+}
+
+.pizza_week{background-color: var(--yellow-pale);}
+.pizza_month{background-color: var(--orange-pale);}
+.reviews{background-color: var(--red-pale);}
+
+/*************** ORDER PAGE ***************/
+
+.order-pizza hr{
+    background-color: var(--white);
+    margin: 8px -20px;
+}
+
+.order-pizza h3{
+    font-size:var(--font-18);
+}
+
+.order-pizza,.order-add-pizza{
+    padding: 15px 0;
+    width:100%;
+}
+.order-pizzas,.order-pizzas-ingredients{
+    width: 100%;
+}
+
+.order-pizza, .order-add-pizza{
+    background-color: var(--yellow);
+    color: var(--white);
+}
+
+.order-ingredients-buttons{
+    border: 1px solid var(--white);
+    color: var(--white);
+    background: rgba(0,0,0,0);
+    border-radius: 0;
+}
+
+.order-ingredients-buttons:hover,.ingredient-active{
+    background: var(--white);
+    color: var(--yellow);
+}
+
+.order-delete,.order-delete-ingredient,.order-add-pizza
+{cursor:pointer;height:min-content;}
+
+
+.order-details, .order-hour, .order-total, .order-button{
+    border: 1px solid var(--white);
+    color: var(--white);
+}
+.order-details{
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    background: var(--orange-pale);
+}
+.order-details:hover, .order-details-active, .order-hour, .order-button{
+    background: var(--orange);
+}
+.order-total{
+    background: var(--red);
+    font-size: var(--font-24);
+}
+.order-total #order-amount, .order-button{
+    font-weight: var(--font-bold);
+}
+.order-button{
+    width: 100%;
+    border-radius: 0;
+    font-size: var(--font-24);
+}
+.order-button:hover{
+    background: var(--orange-pale);
+    color: var(--orange);
+}
+
+/*************** PROFILE PAGE ***************/
+
+.profile-profile{
+    width: 100%;
+    background-color: var(--yellow);
+    color: var(--white);
+}
+
+.profile-profile > .row > div{
+    border: 1px solid var(--white);
+}
+
+.profile-button{
+    background: var(--orange);
+    color: var(--white);
+    font-weight: var(--font-bold);
+}
+
+.profile-review{
+    background: var(--grey);
+    color: var(--black);
+    height: min-content;
+    font-weight: var(--font-bold);
+}
+.profile-review p{
+    font-weight: var(--font-light);
+}
+
+/*************** REVIEW PAGE ***************/
+
+.review-container{
+    background-color: var(--grey);
+    color: var(--black);
+}
+
+#review-content{
+    width: 100%;
+    resize: none;
+    height: 100px;
+}
+
+.review-button{
+    background: var(--orange);
+    color: var(--white);
+    font-weight: var(--font-bold);
+}
+
+/*************** REGISTER & LOGIN PAGE ***************/
+
+.register-container{
+    background-color: var(--grey);
+    color: var(--black);
+}
+
+.login-container{
+    background-color: var(--yellow);
+    color: var(--black);
+}
+
+.register-container label, .login-container label{
+    font-weight: var(--font-bold);
+}
+
+#register-password{
+    flex: 1;
+}
+#register-reveal-password{
+    height: 40px;
+    color: var(--white);
+}
+
+#register-submit, #login-submit{
+    background: var(--orange);
+    color: var(--white);
+    font-weight: var(--font-bold);
+}
+
+#register-errors, #login-errors{
+    color: var(--red);
+}
+
+/*************** PIZZA PAGE ***************/
+
+.pizza-image{
+    width:100%;
+    height: auto;
+}
+
+.pizza-amount{
+    font-weight: var(--font-bold);
+    font-style: italic;
+}
+
+.pizza-order{
+    background: var(--orange);
+    color: var(--white);
+    font-weight: var(--font-bold);
+    border-radius: 10px;
+    font-size: var(--font-24);
+    align-self: center;
+}
+
+
+/*************** MENU PAGE ***************/
+
+/* Such empty*/
+
+
+/*************** PUZZLE JIGSAW ***************/
+
+.puzzle{
+    box-sizing: border-box;
+    height: 250px;
+    width: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    font-size: var(--font-14);
+    color: var(--white);
+}
+.puzzle img{
+    width: auto;
+    height: 40%;
+}
+.puzzle h3{
+    font-size: inherit;
+    padding: 5px 0;
+    font-weight: var(--font-light);
+}
+.puzzle .price{
+    width: 100%;
+    height: min-content;
+    display: flex;
+    justify-content: space-around;
+}
+.puzzle .price p{
+    font-size: inherit;
+    font-weight: var(--font-bold);
+    text-align: center;
+    flex:1;
+    position: relative;
+}
+.puzzle .old-price::after{
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 4px;
+    background-color: var(--orange);
+    transform: translate(-50%, 0);
+    transform-origin: center;
+}
+.puzzle .order-button{
+    display: block;
+    width: 80%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: inherit;
+    font-weight: var(--font-light);
+    background-color: var(--white);
+    color: var(--red)
+}
+
+.puzzle-red{background-color: var(--red);}
+.puzzle-orange{background-color: var(--orange);}
+.puzzle-yellow{background-color: var(--yellow);}
+
+/*************** REVIEW BOX ***************/
+
+.review-box{
+    height: auto;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.review-box-infos{
+    text-align: center;
+    height: 150px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: #dadada;
+}
+.review-box-details{
+    display: flex;
+    justify-content: space-around;
+    font-size: var(--font-12);
+    align-items: center;
+}
+.review-box-author{
+    font-weight: var(--font-bold);
+    font-style: italic;
+}
+.review-box-stars{
+    height: 75px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center !important;
+    background: #aaa;
+}
+
+/*************** STARS ***************/
+
+.stars{
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.stars-text{
+    line-height: 34px;
+}
+
+.stars input{
+    position: relative;
+    display: flex;
+    width: 20px;
+    height: 34px;
+    justify-content: center;
+    align-items: center;
+    appearance: none;
+    overflow: hidden;
+}
+.stars input:not(:disabled){
+    cursor: pointer;
+}
+
+.stars input::before{
+    content: "\f005";
+    font-family: "Font Awesome 5 Free";
+    font-size: 34px;
+    position: absolute;
+    left: 0px;
+    color: var(--white);
+    transition: 0.5s;
+}
+
+.stars input:nth-child(2n+1)::before{
+    right: 0px;
+    left: initial;
+}
+
+.stars input:hover:not(:disabled) ~ input::before,
+.stars input:hover:not(:disabled)::before,
+.stars input:checked ~ input::before,
+.stars input:checked::before{
+    color: var(--yellow);
+}
