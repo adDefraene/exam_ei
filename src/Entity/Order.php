@@ -41,6 +41,11 @@ class Order
      */
     private $orderItems;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date;
+
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
@@ -123,6 +128,18 @@ class Order
                 $orderItem->setItemOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }
