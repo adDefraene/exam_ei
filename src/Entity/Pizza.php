@@ -5,10 +5,17 @@ namespace App\Entity;
 use App\Repository\PizzaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=PizzaRepository::class)
+ * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(
+ *  fields={"name"},
+ *  message="Une autre pizza possède déjà ce nom, merci de le modifier"
+ * )
  */
 class Pizza
 {
@@ -21,6 +28,7 @@ class Pizza
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=5, max=30, minMessage="Nom trop court", maxMessage="Nom trop long")
      */
     private $name;
 
@@ -48,6 +56,11 @@ class Pizza
      * @ORM\ManyToMany(targetEntity=Ingredient::class)
      */
     private $ingredients;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
 
     public function __construct()
     {
@@ -139,6 +152,18 @@ class Pizza
     public function removeIngredient(Ingredient $ingredient): self
     {
         $this->ingredients->removeElement($ingredient);
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

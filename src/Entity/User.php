@@ -47,16 +47,19 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez renseigner votre prénom")
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez renseigner votre nom")
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez renseigner votre rue")
      */
     private $address;
 
@@ -242,5 +245,14 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Gets the name for the evaluation box on the home page
+     *
+     * @return string
+     */ 
+    public function getEvaluationName(){
+        return $this->firstName . " " . substr($this->lastName, 0, 1) . ".";
     }
 }
