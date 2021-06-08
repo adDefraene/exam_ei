@@ -156,6 +156,15 @@ class Pizza
         return $this->ingredients;
     }
 
+    public function getIngredientsInArray(): array
+    {
+        $ingredientsArray = [];
+        foreach($this->getIngredients() as $ingredientCell){
+            $ingredientsArray[] = $ingredientCell;
+        }
+        return $ingredientsArray;
+    }
+
     public function addIngredient(Ingredient $ingredient): self
     {
         if (!$this->ingredients->contains($ingredient)) {
