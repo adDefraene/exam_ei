@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ReviewRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ReviewRepository::class)
@@ -24,6 +25,7 @@ class Review
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(max=120, maxMessage="Évalutation trop longue")
      */
     private $review;
 
@@ -105,5 +107,14 @@ class Review
         $this->starsPunctuality = $starsPunctuality;
 
         return $this;
+    }
+
+    /**
+     * Gets the average notes of the notes
+     *
+     * @return float
+     */
+    public function getAverageRating(){
+        return floor(($this->starsService + $this->starsQuality + $this->starsPunctuality)/3);
     }
 }

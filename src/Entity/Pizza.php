@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use Cocur\Slugify\Slugify;
+use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PizzaRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=PizzaRepository::class)
@@ -34,6 +35,7 @@ class Pizza
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min=75, minMessage="Intro trop courte")
      */
     private $description;
 
@@ -65,6 +67,20 @@ class Pizza
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
+    }
+
+    /**
+     * Initialize automatically the slug if not provided 
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     * 
+     * @return void
+     */
+    public function initializeSlug(){
+        if(empty($this->slug)){
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->name);
+        }
     }
 
     public function getId(): ?int
