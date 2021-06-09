@@ -1,0 +1,31 @@
+{% set url = path('pizza_show', {'slug': pizza.slug}) %}
+    {% if title == "Menu" %}
+        {% if pizza.type == "PROMO" %}
+            <div class="puzzle puzzle-red col-3 offset-1 my-5">
+        {% else %}
+            <div class="puzzle puzzle-yellow col-3 offset-1 my-5">
+        {% endif %}
+    {% elseif title == "Home" %}
+        {% if pizza.type == "PROMO" %}
+            {% if loop.first %}
+                <div class="puzzle puzzle-red col-2 offset-1">
+            {% else %}
+                <div class="puzzle puzzle-red col-2 offset-2">
+            {% endif %}
+        {% else %}
+            <div class="puzzle puzzle-yellow col-4 offset-4">
+        {% endif %}
+    {% endif %}
+        <img src="{{pizza.image}}" alt="Pizza">
+        <h3>{{pizza.name}}{% if pizza.type == "POTM" %} (PDM){% endif %}</h3>
+        <div class="price">
+            {% if pizza.type == "PROMO" %}
+                {% set promo_price = pizza.price * 0.75 %}
+                <p class="old-price">{{pizza.price}} €</p>
+                <p class="price">{{promo_price | round(2, 'floor')}} €</p>
+            {% else %}
+                <p class="price">{{pizza.price}} €</p>
+            {% endif %}
+        </div>
+        <a href="{{url}}" class="order-button">ORDER IT</a>
+    </div> 

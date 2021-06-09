@@ -19,22 +19,17 @@ class PizzaRepository extends ServiceEntityRepository
         parent::__construct($registry, Pizza::class);
     }
 
-    // /**
-    //  * @return Pizza[] Returns an array of Pizza objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getSpecialPizzas($value, $number)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
+            ->andWhere('p.type = :val')
             ->setParameter('val', $value)
             ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+            ->setMaxResults($number)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Pizza

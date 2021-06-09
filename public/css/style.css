@@ -276,6 +276,23 @@ header > .row > div{
 }
 
 
+.pizza-old-price{
+    position: relative;
+}
+.pizza-old-price::after{
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 4px;
+    background-color: var(--orange);
+    transform: translate(-50%, 0);
+    transform-origin: center;
+}
+
+
 /*************** MENU PAGE ***************/
 
 /* Such empty*/

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{pizza.name}}{% endblock %}
+{% set promo_price = pizza.price * 0.75 %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row mt-5">
+            <div class="col-4 offset-2 px-5">
+                <img class="pizza-image mt-5" src="{{pizza.image}}" alt="Image de la pizza {{ pizza.name }}">
+            </div>
+            <div class="col-4">
+                <h1 class="text-center my-5">{{pizza.name}}</h1>
+                <article class="text-justify">
+                    <p>{{pizza.description}}</p>
+                </article>
+                <h3 class="text-center mt-5">INGRÉDIENTS</h3>
+                <p class="text-center">{% for ingredient in pizza.ingredients %}
+                    {% if loop.first %}{% else %}-{% endif %} {{ingredient.name}} 
+                {% endfor %}</p>
+                <div class="row mt-5">
+                    <div class="col-6 text-center pizza-amount">
+                        {% if pizza.type == "PROMO" %}
+                        <h3 class="pizza-old-price">{{pizza.price}} €</h3>
+                        <h3>{{promo_price | round(2, 'floor')}} €</h3></div>
+                        {% else %}
+                        <h3>{{pizza.price}} €</h3></div>
+                        {% endif %}
+                    <a href="#" class="col-6 btn pizza-order">COMMANDER</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
