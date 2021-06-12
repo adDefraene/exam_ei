@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}S'enregistrer{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <h1 class="ml-5">SE CRÉER UN COMPTE</h1>
+        <div class="row">
+            <div class="col-6 offset-3">
+                <div class="p-3 mb-3 register-container">
+                {{form_start(registerForm)}}
+                        <div class="form-group col-6">
+                            {{ form_label(registerForm.lastName) }}
+                            {{ form_widget(registerForm.lastName) }}
+                        </div>
+                        <div class="form-group col-6">
+                            {{ form_label(registerForm.firstName) }}
+                            {{ form_widget(registerForm.firstName) }}
+                        </div>
+                        <div class="form-group col-12">
+                            {{ form_label(registerForm.email) }}
+                            {{ form_widget(registerForm.email) }}
+                        </div>
+                        <div class="form-group col-6">
+                            {{ form_label(registerForm.address) }}
+                            {{ form_widget(registerForm.address) }}
+                        </div>
+                        <div class="form-group col-6">
+                            {{ form_label(registerForm.city) }}
+                            <br>
+                            {{ form_widget(registerForm.city) }}
+                        </div>
+                        <div class="form-group col-12">
+                            {{ form_label(registerForm.password) }}
+                            <div class="form-inline">
+                                {{ form_widget(registerForm.password) }}
+                                <button class="btn btn-secondary ml-2" id="register-reveal-password"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-check my-4">
+                            <input type="checkbox" required name="register-cgu" id="register-cgu">
+                            <label for="register-cgu">J'accepte les conditions générales d'utilisation</label>
+                            <button class="btn btn-warning ml-2" type="button" data-toggle="modal" data-target="#modal-cgu">CONSULTER</button>
+
+                            <div class="modal fade" id="modal-cgu" tabindex="-1" aria-labelledby="modal-cgu" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Conditions générales d'utilisation</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <article class="modal-body">
+                                            <b>Utilisation de mes données</b>
+                                            <br>
+                                            <i>J’accepte que mes informations soient utilisées dans le seul but de pouvoir me servir.</i>
+                                            <br>
+                                            <p>Votre nom et prénom serviront à vous reconnaître tout au long de l’utilisation de notre site, ainsi qu’à notre formulaire d’évaluation. Votre adresse mail est votre identifiant pour vous connecter, celle-ci est utilisée afin de vous envyer des mails récapitulatifs de vos commandes. Votre adresse est celle où vous nous livrerons, si vous souhaiter vous faire livrer.</p>
+                                            <br>
+                                            <b>Conservation de vos données</b>
+                                            <br>
+                                            <i>Nous nous engageons à aucunement divulger vos informations</i>
+                                            <br>
+                                            <p>Vos informations seront stockées dans l’unique but de pouvoir faire fonctionner notre site. Celles-ci ne seront pas vendues à un tiers, car nous souhaitont ne faire aucun profit sur vos données, ainsi que risquer de les compromettre.</p>
+                                        </article>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">FERMER</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-4 offset-4 text-center">
+                            <input type="submit" id="register-submit" disabled class="btn" value="CRÉER UN COMPTE">
+                        </div>
+                    {{ form_end(registerForm) }}
+                </div>
+                <i><a href="{{path('user_login')}}">DÉJÀ UN COMPTE ? SE CONNECTER</a></i>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('document').ready(function(){
+            
+            document.querySelector('form').classList.add("form-row")
+            document.querySelectorAll('.form-group input').forEach(function(elem){elem.classList.add("form-control")})
+
+            document.querySelector("#register-reveal-password").addEventListener("mousedown", function(){
+                let password = document.querySelector("#register_password")
+                if(password.type === "password"){
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i>'
+                    password.type = "text"
+                }else{
+                    this.innerHTML = '<i class="fas fa-eye"></i>'
+                    password.type = "password"
+                }
+            })
+
+            document.querySelector("#register-cgu").addEventListener("click", function(){
+                let submit = document.querySelector("#register-submit")
+                if(this.checked !== true){
+                    submit.setAttribute("disabled", "")
+                }else{
+                    submit.removeAttribute("disabled")
+                }
+            })
+        });
+    </script>
+{% endblock %}

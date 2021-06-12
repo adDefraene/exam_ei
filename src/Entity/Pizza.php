@@ -160,7 +160,7 @@ class Pizza
     {
         $ingredientsArray = [];
         foreach($this->getIngredients() as $ingredientCell){
-            $ingredientsArray[] = $ingredientCell;
+            $ingredientsArray[] = $ingredientCell->getName();
         }
         return $ingredientsArray;
     }
@@ -191,5 +191,9 @@ class Pizza
         $this->slug = $slug;
 
         return $this;
+    }
+
+    public function getIngredientsJSON(){
+        return json_encode($this->getIngredientsInArray());
     }
 }

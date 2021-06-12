@@ -43,6 +43,7 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Vous devez renseigner un mot de passe")
      */
     private $password;
 

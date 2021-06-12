@@ -1,0 +1,231 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commander{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <h1>ORDER</h1>
+        <div class="row">
+            <div class="col-6 offset-1">
+                <h2 class="order-h2 text-center">MY PIZZAS</h2>
+                <div class="pizzas">
+                    <div class="order-pizza container-fluid mb-3">
+                        <div class="row">
+                            <div class="col-6 offset-3">
+                                <div class="row">
+                                    <h3 class="col-3 text-center">PIZZA:</h3>
+                                    <select name="order-pizzas" class="col-8 order-pizzas">
+                                        {% for pizza in pizzas %}
+                                            {{ dump(pizza) }}
+                                            <option
+                                                value="{{pizza.id}}"
+                                                price="{% if pizza.type == "PROMO" %}{{pizza.price * 0.75}}{% else %}{{pizza.price}}{% endif %}"
+                                                ingredients="{{pizza.getIngredientsJSON}}"
+                                            >{{pizza.name}}</option>
+                                            {{dump(pizza.ingredients)}}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="col-3 order-delete">X</div>
+                            <div class="col">
+                                <h3 class="text-center">INGREDIENTS:</h3>
+                                <div class="container-fluid">
+                                    <div class="row order-ingredients">
+                                        {% for ingredient in ingredients %}
+                                            <div class="col m-2 order-ingredients-buttons btn" price="{{ingredient.price}}" id="{{ingredient.id}}">{{ingredient.name}}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-add-pizza p-1 my-3 text-center">+</div>
+            </div>
+            <div class="col-4">
+                <h2 class="order-h2">MY DETAILS</h2>
+                {{form_start(orderForm)}}
+                    <div class="row">
+                        <div class="col-6 p-3 text-center order-details order-details-active">MA COMMANDE SERA EMPORTÉE</div>
+                        <div class="col-6 p-3 text-center order-details" id="order-delivered">MA COMMANDE SERA LIVRÉE (+3€)</div>
+                        <div class="col-12 p-3 my-3 text-center order-hour">
+                            <div class="row">
+                                <div class="col">HEURE DE RÉSERVATION</div>
+                                <div class="col">
+                                    {{form_widget(orderForm.date)}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 offset-3 p-3 my-5 text-center order-total">Total : <span id="order-amount"></span>
+                        </div>
+                        <input class="col-12 p-3 btn order-button" type="submit" value="PRENDRE MA COMMANDE">
+                    </div>
+                {{form_end(orderForm)}}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('document').ready(function(){
+
+            function getTotal(){
+                let total = 0;
+
+                let order = []
+
+                document.querySelectorAll(".order-pizza").forEach(function(orderElem, numberOfItem){
+                    order[numberOfItem] = {}
+
+                    orderElem.querySelectorAll("select option").forEach(function(pizza){
+                        if(pizza.selected === true){
+                            total += (parseFloat(pizza.attributes.price.value))
+                            order[numberOfItem]["pizzaId"] = (parseInt(pizza.value))
+                        }
+                    })
+                    order[numberOfItem]["ingredients"] = []
+
+                    orderElem.querySelectorAll(".ingredient-active").forEach(function(ingredientSup, numberOfIngredient){
+                        total += (parseFloat(ingredientSup.attributes.price.value))
+                        order[numberOfItem]["ingredients"][numberOfIngredient] = (parseInt(ingredientSup.attributes.id.value))
+                    })
+                })
+
+                if(document.querySelector("#order-delivered").classList.contains("order-details-active")){
+                    total += 3
+                    document.querySelector("#order_ifDelivered").value = true
+                } else{
+                    document.querySelector("#order_ifDelivered").value = false
+                }
+
+                total = (Math.ceil(total*100))/100
+                document.querySelector("#order-amount").innerText = ""        
+                document.querySelector("#order-amount").innerText = total+"€"
+                
+                document.querySelector("#order_orderItemsJson").value = JSON.stringify(order)
+
+                console.log(document.querySelector("#order_orderItemsJson").value)
+            }
+
+            function setsDeletePizza(elem){
+                if(elem.querySelector(".order-delete")){
+                    elem.querySelector(".order-delete").addEventListener("click", function(){
+                        elem.remove()
+                    })
+                }
+                getTotal()
+            }
+                        
+            function setIngredientsForPizza(elem, objPizzas){
+                Object.keys(objPizzas).forEach(function(pizza){
+                    if(objPizzas[pizza].selected === true){
+                        let ingredientsinPizza = JSON.parse(objPizzas[pizza].attributes['ingredients'].value)
+                        ingredientsinPizza.forEach(function(ingredientInPizza){
+                            let ingredientsButtons = elem.querySelector(".order-ingredients").children
+                            Object.keys(ingredientsButtons).forEach(function(ingredientButton){
+                                if(ingredientInPizza === (ingredientsButtons[ingredientButton].innerText)){
+                                    ingredientsButtons[ingredientButton].classList.add("disabled")
+                                }
+                            })
+                        })
+                    }
+                })
+                
+                getTotal()
+            }
+
+            function resetIngredientsForPizza(elem){
+                elem.querySelectorAll(".disabled").forEach(function(ingredientsToEnable){
+                    ingredientsToEnable.classList.remove("disabled")
+                })
+                elem.querySelectorAll(".ingredient-active").forEach(function(buttonToDisable){
+                    buttonToDisable.classList.remove("ingredient-active")
+                })
+                
+                getTotal()
+            }
+
+            function addSupIngredients(elem){
+                elem.querySelectorAll(".order-ingredients-buttons").forEach(function(button){
+                    if(!button.classList.contains("disabled")){
+                        button.addEventListener("click", function(){
+                            button.classList.toggle("ingredient-active")
+                            getTotal()
+                        })
+                    }
+                })
+            }
+
+            function setSelectPizza(elem){
+                let objPizzas = elem.querySelector("select")
+                objPizzas.addEventListener("change", function(){
+                    resetIngredientsForPizza(elem)
+                    setIngredientsForPizza(elem, objPizzas)
+                    })
+                setIngredientsForPizza(elem, objPizzas)
+            }
+            
+            function setsFunctions(elem){
+                setsDeletePizza(elem)
+                setSelectPizza(elem)
+                addSupIngredients(elem)
+            }
+
+            const PIZZA_FORM = document.querySelector(".order-pizza")
+            setsFunctions(PIZZA_FORM)
+
+            document.querySelector(".order-add-pizza").addEventListener("click", function(){
+                let newPizzaForm = PIZZA_FORM.cloneNode(true)
+                setsFunctions(newPizzaForm)
+                document.querySelector(".pizzas").appendChild(newPizzaForm)
+                getTotal();
+            })
+
+            let deliveryButtons = document.querySelectorAll(".order-details")
+            deliveryButtons.forEach(function(deliveryButton){
+                deliveryButton.addEventListener("click", function(){
+                    if(!deliveryButton.classList.contains("order-details-active")){
+                        deliveryButtons.forEach(function(againButtons){
+                            againButtons.classList.toggle("order-details-active")
+                        })
+                    }
+                    getTotal()
+                })
+            })
+
+            let reservationDate = new Date()
+            let correctMonth = reservationDate.getUTCMonth(this) + 1
+            document.querySelector("#order_date #order_date_date_day").value = reservationDate.getUTCDate(this)
+            document.querySelector("#order_date #order_date_date_day").setAttribute("readonly", true)
+            document.querySelector("#order_date #order_date_date_month").value = correctMonth
+            document.querySelector("#order_date #order_date_date_month").setAttribute("readonly", true)
+            document.querySelector("#order_date #order_date_date_year").value = reservationDate.getUTCFullYear(this)
+            document.querySelector("#order_date #order_date_date_year").setAttribute("readonly", true)
+
+            document.querySelector("#order_date #order_date_time_hour").childNodes.forEach(function(hour){
+                if(reservationDate.getHours(this) > hour.value){ 
+                    hour.setAttribute("disabled", true)
+                }
+                
+                if (hour.value <= 11 && hour.value >= 0){
+                    hour.setAttribute("disabled", true)
+                } else if(hour.value >= 14 && hour.value <= 17){
+                    hour.setAttribute("disabled", true)
+                } else if (hour.value >= 22){   
+                    hour.setAttribute("disabled", true)
+                }
+            })
+            document.querySelector("#order_date #order_date_time_minute").childNodes.forEach(function(minute){
+                if(minute.value % 5 > 0){
+                    minute.setAttribute("disabled", true)
+                }
+            })
+            
+            getTotal()
+
+        });
+    </script>
+{% endblock %}

@@ -46,6 +46,16 @@ class Order
      */
     private $date;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $ifDelivered;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $orderItemsJson;
+
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
@@ -143,4 +153,29 @@ class Order
 
         return $this;
     }
+
+    public function getIfDelivered(): ?bool
+    {
+        return $this->ifDelivered;
+    }
+
+    public function setIfDelivered(bool $ifDelivered): self
+    {
+        $this->ifDelivered = $ifDelivered;
+
+        return $this;
+    }
+
+    public function getOrderItemsJson(): ?string
+    {
+        return $this->orderItemsJson;
+    }
+
+    public function setOrderItemsJson(?string $orderItemsJson): self
+    {
+        $this->orderItemsJson = $orderItemsJson;
+
+        return $this;
+    }
+
 }

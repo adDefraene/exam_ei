@@ -7,16 +7,25 @@
             <a href="#">À PROPOS</a>
         </li>
         <li class="col-2">
-            <img src="images/Pizza_Puzzle1.png" alt="Logo Pizzle's">
+            <img src="/images/Pizza_Puzzle1.png" alt="Logo Pizzle's">
         </li>
         <li class="col-1">
             <a href="{{path('menu')}}">MENU</a>
         </li>
         <li class="col-1">
-            <a href="#" class="menu-button">COMMANDER</a>
+            <a href="{{path('order')}}" class="menu-button">COMMANDER</a>
         </li>
-        <li class="col-2 offset-1">
-            <a href="#" class="menu-button">MON COMPTE</a>
-        </li>
+        {% if app.user %}
+            <li class="col-1 offset-1">
+                <a href="{{path('user_profile')}}" class="menu-button">MON COMPTE</a>
+            </li>
+            <li class="col-1">
+                <a href="{{path('user_logout')}}" class="menu-button">DÉCONNEXION</a>
+            </li>
+        {% else %}
+            <li class="col-2 offset-1">
+                <a href="{{path('user_login')}}" class="menu-button">SE CONNECTER</a>
+            </li>
+        {% endif %}
     </ul>
 </nav>

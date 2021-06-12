@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+    {% for label, messages in app.flashes %}
+        <div class="container">
+            <div class="alert alert-{{label}}">
+                {% for message in messages %}
+                    <p>{{ message | raw }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+    <div class="container-fluid">
+        <h1>MON COMPTE</h1>
+        <div class="row">
+            <div class="col-8 offset-2">
+                <h2>MON PROFIL</h2>
+                <div class="container profile-profile p-3">
+                    <div class="row px-5">
+                        <div class="my-2 py-1 col mr-1">{{user.firstName}}</div>
+                        <div class="my-2 py-1 col ml-1">{{user.lastName}}</div>
+                        <div class="my-2 py-1 col-12">{{user.email}}</div>
+                        <div class="my-2 py-1 col-8">{{user.address}}</div>
+                        <div class="my-2 py-1 col ml-2">{{user.city}}</div>
+                        <a class="btn profile-button mt-2 col-3 offset-5 text-center" href="{{path('user_profile_modify')}}">ÉDITER MES INFORMATIONS</a>
+                        <a class="btn profile-button mt-2 col-3 offset-1 text-center" href="{{path('user_password')}}">ÉDITER MON MOT DE PASSE</a>
+                    </div>
+                </div>
+                <hr>
+                <h2 class="mt-4">MES COMMANDES EN COURS</h2>
+                <div class="row">
+                    {% for order in user.orders %}
+                        {% if order.date > date() %}
+                            <div class="col-6 profile-review my-2">
+                                <div class="col text-center my-2">{{order.date | date('d-m-Y h:i')}}</div>
+                                {% for orderItem in order.orderItems %}
+                                    <p>
+                                    <b>{{orderItem.itemPizza.name}}</b>
+                                        {% if orderItem.supIngredients %}
+                                            <i>(
+                                                {% for ingredient in orderItem.supIngredients %}
+                                                    {% if loop.first %} Ingrédients supplémentaires : {% else %} +{% endif %}
+                                                    {{ingredient.name}}
+                                                {% endfor %}
+                                            )</i>
+                                        {% endif %}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <hr>
+                <h2 class="mt-4">MES ÉVALUTATIONS</h2>
+                <div class="row">
+                    {% for order in user.orders %}
+                        {% if order.date < date() %}
+                            {% if order.review %}
+                                <div class="col-6 profile-review">
+                                    <div class="row my-2 p-2">
+                                        <div class="col text-center">{{order.date | date('d-m-Y h:i')}}</div>
+                                        <div class="col text-center stars my-2">
+                                            {% for i in 10..1 %}
+                                                <input type="radio" class="fas" {% if order.review.averageRating == i %}checked{% endif %} disabled value="{{i}}">
+                                            {% endfor %}
+                                        </div>
+                                        <p class="col-12 text-center">{{ order.review.review | nl2br}}</p>
+                                        <div class="col-8 offset-2 mt-2">
+                                            <div class="row">
+                                                <div class="col-3 text-center">SERVICE</div>
+                                                <div class="ml-auto text-center stars ">        
+                                                    {% for i in 10..1 %}
+                                                        <input type="radio" class="fas" {% if order.review.starsService == i %}checked{% endif %} disabled value="{{i}}">
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-8 offset-2 mt-2">
+                                            <div class="row">
+                                                <div class="col-3 text-center">QUALITÉ</div>
+                                                <div class="ml-auto text-center stars">       
+                                                    {% for i in 10..1 %}
+                                                        <input type="radio" class="fas" {% if order.review.starsQuality == i %}checked{% endif %} disabled value="{{i}}">
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-8 offset-2 mt-2">
+                                            <div class="row">
+                                                <div class="col-3 text-center">PONCTUALITÉ</div>
+                                                <div class="ml-auto text-center stars">       
+                                                    {% for i in 10..1 %}
+                                                        <input type="radio" class="fas" {% if order.review.starsPunctuality == i %}checked{% endif %} disabled value="{{i}}">
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                {% set reviewUrl = path('user_review', {'id': order.id}) %}
+                                <div class="col-6 profile-review">
+                                    <div class="row my-2 p-2">
+                                        <div class="col text-center">{{order.date | date('d-m-Y h:i')}}</div>
+                                        <a href="{{reviewUrl}}" class="btn profile-button col">ÉVALUER</a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
