@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PizzaRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -50,12 +50,13 @@ class Pizza
     private $type;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Image(mimeTypes={"image/png", "image/jpeg", "image/jpg", "image/gif"}, mimeTypesMessage="Vous devez upload un fichier jpg, png ou gif")
      */
     private $image;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Ingredient::class)
+     * @ORM\ManyToMany(targetEntity=Ingredient::class, cascade={"detach"})
      */
     private $ingredients;
 
@@ -141,7 +142,7 @@ class Pizza
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    public function setImage(?string $image): self
     {
         $this->image = $image;
 

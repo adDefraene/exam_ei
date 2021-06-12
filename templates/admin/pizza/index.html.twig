@@ -1,0 +1,43 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Administration des pizzas{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <h1 class="my-5">Gestion des pizzas</h1>
+        <a href="{{path("admin_pizza_add")}}" class="btn btn-success mb-3">Ajouter une pizza</a>
+        <a href="{{path("admin_pizza_promos")}}" class="btn btn-success my-3">Choisir les pizzas promos</a>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Type</th>
+                    <th>Prix</th>
+                    <th class="text-center">Nombre d'ingrédients</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pizza in pagination.data %}
+                    <tr>
+                        <td>{{pizza.id}}</td>
+                        <td>{{pizza.name}}</td>
+                        <td>{{pizza.type}}</td>
+                        <td>{{pizza.price}}€</td>
+                        <td class="text-center">
+                            <span class="badge badge-primary rounded">{{pizza.ingredients | length }}</span>
+                        </td>
+                        <td class="text-center">
+                            
+                            <a href="{{path('admin_pizza_edit', {'id':pizza.id})}}" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                            
+                            <a href="{{path('admin_pizza_delete',{'id':pizza.id})}}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+       {{ pagination.display() }}
+    </div>
+{% endblock %}

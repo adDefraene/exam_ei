@@ -19,7 +19,7 @@ class Review
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=Order::class, inversedBy="review", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Order::class, inversedBy="review", cascade={"detach"})
      */
     private $reviewedOrder;
 

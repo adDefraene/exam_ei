@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,6 +20,7 @@ class Ingredient
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez renseigner un nom")
      */
     private $name;
 

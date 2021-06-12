@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\OrderRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToOne;
+use App\Repository\OrderRepository;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\PersistentCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
@@ -37,7 +40,7 @@ class Order
     private $review;
 
     /**
-     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="itemOrder")
+     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="itemOrder",  cascade={"persist", "remove"})
      */
     private $orderItems;
 

@@ -1,0 +1,142 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block stylesheets %}
+<style>
+    a{color:#eee;}
+</style>
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row my-5">
+            <div class="col">
+                <div class="cards bg-primary text-white mb-3 text-center">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <i class="fas fa-users fa-3x"></i>
+                            </div>
+                            <div class="col-8">
+                               <a href="{{path('admin_user_index')}}"><h4 class="card-title">{{stats.users}} utilisateurs</h4></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="cards bg-warning text-white mb-3 text-center">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <i class="fas fa-pizza-slice fa-3x"></i>
+                            </div>
+                            <div class="col-8">
+                                 <a href="{{path('admin_pizza_index')}}"><h4 class="card-title">{{stats.pizzas}} pizzas créées</h4></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="cards bg-danger text-white mb-3 text-center">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <i class="fas fa-pepper-hot fa-3x"></i>
+                            </div>
+                            <div class="col-8">
+                                <h4 class="card-title">{{stats.ingredients}} ingrédients</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="cards bg-secondary text-white mb-3 text-center">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <i class="fas fa-paper-plane fa-3x"></i>
+                            </div>
+                            <div class="col-8">
+                                <h4 class="card-title">{{stats.orders}} commandes</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="cards bg-success text-white mb-3 text-center">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <i class="fas fa-comments fa-3x"></i>
+                            </div>
+                            <div class="col-8">
+                                <h4 class="card-title">{{stats.reviews}} évaluations</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {#
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-success">
+                    <h2 class="alert-heading my-3"><i class="fas fa-arrow-up"></i> Les meilleures reviews</h2>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Review</th>
+                                <th>Utilisateur</th>
+                                <th class="text-center">Moyenne</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for review in bestReviews %}
+                                <tr>
+                                    <td>{{review.review}}</td>
+                                    <td>{{review.reviewedOrder.customer.firstName}} {{review.reviewedOrder.customer.lastName}}</td>
+                                    <td class="text-center">
+                                        <span class="badge badge-dark">{{ review.averageRating | number_format(1,',',' ') }}</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col">
+                <div class="alert alert-danger">
+                    <h2 class="alert-heading my-3"><i class="fas fa-arrow-down"></i> Les pires reviews</h2>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Review</th>
+                                <th>Utilisateur</th>
+                                <th class="text-center">Moyenne</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for review in bestReviews %}
+                                <tr>
+                                    <td>{{review.review}}</td>
+                                    <td>{{review.reviewedOrder.customer.firstName}} {{review.reviewedOrder.customer.lastName}}</td>
+                                    <td class="text-center">
+                                        <span class="badge badge-dark">{{ review.averageRating | number_format(1,',',' ') }}</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    #}
+
+
+    </div>
+{% endblock %}

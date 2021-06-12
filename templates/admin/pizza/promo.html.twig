@@ -1,0 +1,54 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Choix des pizzas PROMOS{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Choix des pizzas PROMOS</h1>
+        <a href="{{path('admin_pizza_index')}}" class="btn btn-secondary my-3">Retour</a>
+        <div class="row">
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h4 class="card-title">Modifier les pizzas en promos ?</h4>
+                    </div>
+                    <div class="card-body">
+                        <label for="exampleFormControlSelect2">Pizzas :</label>
+                        <select multiple class="form-control" id="exampleFormControlSelect2">
+                            {% for pizza in pizzas %}
+                                    <option value="{{pizza.id}}" {% if pizza.type == "PROMO" %}selected{% endif %} {% if pizza.type == "POTM" %}disabled{% endif %}
+                                    >{{pizza.name}}</option>
+                            {% endfor %}
+                        </select>
+                        {{form_start(myForm)}}
+                        {{form_widget(myForm)}}
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check"></i>
+                            Enregistrer les pizzas
+                        </button>
+                        {{form_end(myForm)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $('document').ready(function(){    
+        document.querySelector("#exampleFormControlSelect2").addEventListener("change", function(select){
+            var arrayOfIds = [];
+            let selects = select.target.children;
+            Object.keys(selects).forEach(element => {
+                if(selects[element].selected === true){
+                    arrayOfIds.push(selects[element].value)
+                }
+            });
+
+            let arrayInJson = JSON.stringify(arrayOfIds)
+            document.querySelector("#admin_promo_pizzasToPromo").value = arrayInJson
+        })
+    });
+</script>
+{% endblock %}

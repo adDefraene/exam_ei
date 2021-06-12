@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\PersistentCollection;
 use App\Repository\OrderItemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,12 +26,12 @@ class OrderItem
     private $itemOrder;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Pizza::class)
+     * @ORM\ManyToOne(targetEntity=Pizza::class, cascade={"detach"})
      */
     private $itemPizza;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Ingredient::class)
+     * @ORM\ManyToMany(targetEntity=Ingredient::class, cascade={"detach"})
      */
     private $supIngredients;
 
