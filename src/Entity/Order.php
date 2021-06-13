@@ -181,4 +181,22 @@ class Order
         return $this;
     }
 
+    public function getTotal(){
+        $total = 0;
+
+        foreach($this->getOrderItems() as $orderItem){
+            if($orderItem->getItemPizza()->getType() === "PROMO"){
+                $total .= ($orderItem->getItemPizza()->getPrice() * 0.75);
+            } else {
+                $total .= ($orderItem->getItemPizza()->getPrice());
+            }
+
+            foreach($orderItem->getSupIngredients() as $supIngredient){
+                $total .= $supIngredient->getPrice();
+            }
+        }
+
+        return $total;
+    }
+
 }

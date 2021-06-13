@@ -34,7 +34,7 @@
                     {% for order in user.orders %}
                         {% if order.date > date() %}
                             <div class="col-6 profile-review my-2">
-                                <div class="col text-center my-2">{{order.date | date('d-m-Y h:i')}}</div>
+                                <div class="col text-center my-2">{{order.date | date('d-m-Y H:i')}}</div>
                                 {% for orderItem in order.orderItems %}
                                     <p>
                                     <b>{{orderItem.itemPizza.name}}</b>
@@ -60,7 +60,7 @@
                             {% if order.review %}
                                 <div class="col-6 profile-review">
                                     <div class="row my-2 p-2">
-                                        <div class="col text-center">{{order.date | date('d-m-Y h:i')}}</div>
+                                        <div class="col text-center">{{order.date | date('d-m-Y H:i')}}</div>
                                         <div class="col text-center stars my-2">
                                             {% for i in 10..1 %}
                                                 <input type="radio" class="fas" {% if order.review.averageRating == i %}checked{% endif %} disabled value="{{i}}">
@@ -103,7 +103,7 @@
                                 {% set reviewUrl = path('user_review', {'id': order.id}) %}
                                 <div class="col-6 profile-review">
                                     <div class="row my-2 p-2">
-                                        <div class="col text-center">{{order.date | date('d-m-Y h:i')}}</div>
+                                        <div class="col text-center">{{order.date | date('d-m-Y H:i')}}</div>
                                         <a href="{{reviewUrl}}" class="btn profile-button col">ÉVALUER</a>
                                     </div>
                                 </div>

@@ -98,7 +98,7 @@ class PizzaController extends AbstractController
             } else {
                 $formMessage .= "<br><b>La commande sera à emporter à :";
             }
-            $formMessage .= "<u>".$order->getDate()->format('Y-m-d h:i') . "</u></b>";
+            $formMessage .= "<u>".$order->getDate()->format('Y-m-d H:i') . "</u></b>";
 
             $formMessage .= "<br><br>TOTAL : ".$orderTotal."€";
 
@@ -117,7 +117,7 @@ class PizzaController extends AbstractController
             $myMail = "adriendefraene@gmail.com";
             
         //SUBJECT OF THE MAIL
-            $mailSubject = " Commande de Pizzle's - ". $order->getDate()->format('Y-m-d h:i');
+            $mailSubject = " Commande de Pizzle's - ". $order->getDate()->format('Y-m-d H:i');
             
         //HEADER OF THE MAIL
             $header = "From: \"Pizzle's\"<hey@adriendefraene.be>".$lineScan;
@@ -144,7 +144,7 @@ class PizzaController extends AbstractController
             $messageFinal .= $lineScan."--".$boundary."--".$lineScan;
             $messageFinal .= $lineScan."--".$boundary."--".$lineScan;
 
-            mail($myMail, $mailSubject, $messageFinal, $header);
+            //mail($myMail, $mailSubject, $messageFinal, $header);
             
             $manager->flush();
 

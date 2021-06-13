@@ -39,7 +39,7 @@ class AdminOrderController extends AbstractController
 
         $this->addFlash(
             'success',
-            "La commande du <strong>{$order->getDate()->format("Y-m-d h:i")}</strong> a bien été supprimée"
+            "La commande du <strong>{$order->getDate()->format("Y-m-d H:i")}</strong> a bien été supprimée"
         );
 
         $manager->remove($order->getOrderItems());

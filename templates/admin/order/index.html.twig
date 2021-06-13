@@ -11,6 +11,7 @@
                     <th>Id</th>
                     <th>Date</th>
                     <th>Client</th>
+                    <th>État</th>
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -18,8 +19,9 @@
                 {% for order in pagination.data %}
                     <tr>
                         <td>{{order.id}}</td>
-                        <td>{{order.date | date('Y-m-d h:i')}}</td>
+                        <td>{{order.date | date('Y-m-d H:i')}}</td>
                         <td>{{order.customer.firstName}} {{order.customer.lastName}}</td>
+                        <td>{{order.state}}</td>
                         <td class="text-center">
                             <a href="{{path('admin_order_delete',{'id':order.id})}}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                         </td>
