@@ -169,33 +169,39 @@ class Order
         return $this;
     }
 
+    /**
+     * Gets the order in a JSON string
+     *
+     * @return string|null
+     */
     public function getOrderItemsJson(): ?string
     {
         return $this->orderItemsJson;
     }
 
-    public function setOrderItemsJson(?string $orderItemsJson): self
-    {
-        $this->orderItemsJson = $orderItemsJson;
-
-        return $this;
-    }
-
+    /**
+     * Returns the total of an order
+     *
+     * @return float
+     */
     public function getTotal(){
         $total = 0;
 
+        // For each pizza ordered
         foreach($this->getOrderItems() as $orderItem){
+            // If is in promo : -25%
             if($orderItem->getItemPizza()->getType() === "PROMO"){
                 $total .= ($orderItem->getItemPizza()->getPrice() * 0.75);
             } else {
                 $total .= ($orderItem->getItemPizza()->getPrice());
             }
-
+            //For each sup ingredient
             foreach($orderItem->getSupIngredients() as $supIngredient){
                 $total .= $supIngredient->getPrice();
             }
         }
-
+        
+        // Returns it
         return $total;
     }
 

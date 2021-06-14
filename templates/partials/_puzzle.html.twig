@@ -16,8 +16,10 @@
             <div class="puzzle puzzle-yellow col-4 offset-4">
         {% endif %}
     {% endif %}
-        <img src="{{pizza.image}}" alt="Pizza">
-        <h3>{{pizza.name}}{% if pizza.type == "POTM" %} (PDM){% endif %}</h3>
+        <img 
+        src="{% if '://' in pizza.image %}{{pizza.image}}{% else %}images/{{pizza.image}}{% endif %}"
+        alt="Photo de la pizza {{pizza.name}}">
+        <h3><a href="{{url}}">{{pizza.name}}{% if pizza.type == "POTM" %} (PDM){% endif %}</a></h3>
         <div class="price">
             {% if pizza.type == "PROMO" %}
                 {% set promo_price = pizza.price * 0.75 %}
@@ -27,5 +29,5 @@
                 <p class="price">{{pizza.price}} €</p>
             {% endif %}
         </div>
-        <a href="{{url}}" class="order-button">ORDER IT</a>
+        <a href="{{path('order', {'pizza':pizza.slug})}}" class="order-button">ORDER IT</a>
     </div> 

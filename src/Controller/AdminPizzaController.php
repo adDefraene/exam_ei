@@ -110,6 +110,7 @@ class AdminPizzaController extends AbstractController
 
             if($form->isSubmitted() && $form->isValid())
             {   
+                $pizza->setSlug("");
                 $file = $form['image']->getData();
                 if(!empty($file)){
                     $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -138,7 +139,7 @@ class AdminPizzaController extends AbstractController
 
                 $this->addFlash(
                     "success",
-                    "La pizza <strong>{$pizza->getName()}</strong> a bien été ajoutée !"
+                    "La pizza <strong>{$pizza->getName()}</strong> a bien été modifiée !"
                 );
 
                 return $this->redirectToRoute('admin_pizza_index');
@@ -182,18 +183,12 @@ class AdminPizzaController extends AbstractController
                     $manager->flush();
                 }
             }
-
-        /*
-            $ingredients = $repo->findAll();
         
             $this->addFlash(
                 "success",
-                "La pizza <strong>{$pizza->getName()}</strong> a bien été ajoutée !"
+                "Les pizzas en promotions ont bien été modifiées !"
             );
 
-            return $this->redirectToRoute('admin_pizza_index');
-            
-        */
             return $this->render('admin/pizza/promo.html.twig', [
                 'myForm' => $form->createView(),
                 'pizzas' => $pizzas,

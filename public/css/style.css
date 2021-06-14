@@ -297,7 +297,11 @@ header > .row > div{
 
 /*************** MENU PAGE ***************/
 
-/* Such empty*/
+article p{
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+}
 
 
 /*************** PUZZLE JIGSAW ***************/
@@ -323,6 +327,7 @@ header > .row > div{
     padding: 5px 0;
     font-weight: var(--font-light);
 }
+.puzzle h3 a{color: var(--white);}
 .puzzle .price{
     width: 100%;
     height: min-content;

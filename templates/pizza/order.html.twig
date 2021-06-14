@@ -16,12 +16,13 @@
                                     <h3 class="col-3 text-center">PIZZA:</h3>
                                     <select name="order-pizzas" class="col-8 order-pizzas">
                                         {% for pizza in pizzas %}
-                                            {{ dump(pizza) }}
                                             <option
+                                                {% if app.request.get('pizza') == pizza.slug %} selected {% endif %}
                                                 value="{{pizza.id}}"
                                                 price="{% if pizza.type == "PROMO" %}{{pizza.price * 0.75}}{% else %}{{pizza.price}}{% endif %}"
                                                 ingredients="{{pizza.getIngredientsJSON}}"
-                                            >{{pizza.name}}</option>
+                                            >{{pizza.name}}{% if pizza.type == "POTM" %} (PDM){% endif %}
+                                            </option>
                                             {{dump(pizza.ingredients)}}
                                         {% endfor %}
                                     </select>

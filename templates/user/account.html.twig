@@ -48,6 +48,7 @@
                                         {% endif %}
                                     </p>
                                 {% endfor %}
+                                TOTAL : {{order.getTotal | format_currency_('EUR', {rounding_mode: 'ceil'})}}
                             </div>
                         {% endif %}
                     {% endfor %}

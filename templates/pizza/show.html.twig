@@ -7,12 +7,15 @@
     <div class="container-fluid">
         <div class="row mt-5">
             <div class="col-4 offset-2 px-5">
-                <img class="pizza-image mt-5" src="{{pizza.image}}" alt="Image de la pizza {{ pizza.name }}">
+                <img
+                class="pizza-image mt-5"
+                src="{% if '://' in pizza.image %}{{pizza.image}}{% else %}images/{{pizza.image}}{% endif %}"
+                alt="Image de la pizza {{ pizza.name }}">
             </div>
             <div class="col-4">
                 <h1 class="text-center my-5">{{pizza.name}}</h1>
                 <article class="text-justify">
-                    <p>{{pizza.description}}</p>
+                    <p>{{pizza.description | nl2br}}</p>
                 </article>
                 <h3 class="text-center mt-5">INGRÉDIENTS</h3>
                 <p class="text-center">{% for ingredient in pizza.ingredients %}
@@ -26,7 +29,7 @@
                         {% else %}
                         <h3>{{pizza.price}} €</h3></div>
                         {% endif %}
-                    <a href="#" class="col-6 btn pizza-order">COMMANDER</a>
+                    <a href="{{path('order', {'pizza':pizza.slug})}}" class="col-6 btn pizza-order">COMMANDER</a>
                 </div>
             </div>
         </div>
