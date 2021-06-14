@@ -65,16 +65,25 @@
 
 {% block javascripts %}
     <script>
+    // When document has loaded
         $('document').ready(function(){
             
+            // When a key is up while writing on the textarea, do the getTextArea function
             document.querySelector("#review_review").addEventListener("keyup", getTextareaLength);
+
+            // Function that gets the number of characters left to be written
             function getTextareaLength(){
+                // The countdown is equals to 120 (maxLength) minus the actual number of characters
                 document.querySelector("#review-content-length").textContent = 120 - (document.querySelector("#review_review").textLength)
             }
+            // Do it once
             getTextareaLength();
 
+            // Give the values of the stars to its hidden input
             document.querySelectorAll(".stars input").forEach(function(star){
+                // When on click of a star
                 star.addEventListener("click", function(){
+                    // Give its value to its hidden input
                     star.offsetParent.children[10].value = star.value
                     console.log(star.offsetParent.children[10].value)
                 })

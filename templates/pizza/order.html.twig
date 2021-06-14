@@ -71,134 +71,200 @@
 
 {% block javascripts %}
     <script>
+    // When document has loaded
         $('document').ready(function(){
 
+            // Function that operates the total amount of the order and the JSON string needed for the insert of the "orderItems"
             function getTotal(){
-                let total = 0;
+                // Defines our vars
+                let total = 0; // The total amount of the order
+                let order = [] // The array of our "orderItems" to convert in JSON
 
-                let order = []
-
+                // Select all of our "orderItems", so for each item
                 document.querySelectorAll(".order-pizza").forEach(function(orderElem, numberOfItem){
+                    // Each order item is an object in the original array
                     order[numberOfItem] = {}
 
+                    // Get the selected pizza
                     orderElem.querySelectorAll("select option").forEach(function(pizza){
                         if(pizza.selected === true){
-                            total += (parseFloat(pizza.attributes.price.value))
-                            order[numberOfItem]["pizzaId"] = (parseInt(pizza.value))
+                            // Adds its value to the total
+                            total += (parseFloat(pizza.attributes.price.value)) // The price is sent in an attribute
+                            // Adds it id as the "pizzaId" key
+                            order[numberOfItem]["pizzaId"] = (parseInt(pizza.value)) // The id is the value of the option
                         }
                     })
+
+                    // Get each sup ingredients
+                    
+                    //Set them as an array of their id, for the second key "ingredients"
                     order[numberOfItem]["ingredients"] = []
 
+                    // For each sup ingredient selected
                     orderElem.querySelectorAll(".ingredient-active").forEach(function(ingredientSup, numberOfIngredient){
+                        // Add its value to the total
                         total += (parseFloat(ingredientSup.attributes.price.value))
+                        // Adds its id to the array of the second key
                         order[numberOfItem]["ingredients"][numberOfIngredient] = (parseInt(ingredientSup.attributes.id.value))
                     })
                 })
 
+                // Checks if the "delivered" or "take-away" button is active
                 if(document.querySelector("#order-delivered").classList.contains("order-details-active")){
-                    total += 3
-                    document.querySelector("#order_ifDelivered").value = true
+                    // If delivered
+                    total += 3 // Adds the 3€ fees to the total amount
+                    document.querySelector("#order_ifDelivered").value = true // sets the "true" value for the "ifDelivered" field
                 } else{
-                    document.querySelector("#order_ifDelivered").value = false
+                    // If take-away
+                    document.querySelector("#order_ifDelivered").value = false // sets the "false" value for the "ifDelivered" field
                 }
 
+                // Round the total amount
                 total = (Math.ceil(total*100))/100
+                // Reset the total box content
                 document.querySelector("#order-amount").innerText = ""        
+                // Set the total box content with the total amount
                 document.querySelector("#order-amount").innerText = total+"€"
                 
+                // Translate our array of "itemObjects" in JSON and send its value to the dedicated hidden input
                 document.querySelector("#order_orderItemsJson").value = JSON.stringify(order)
-
-                console.log(document.querySelector("#order_orderItemsJson").value)
             }
 
+            // Sets the event of delete to the pizza / elem = the pizza to add the event
             function setsDeletePizza(elem){
+                // Select the delete cross
                 if(elem.querySelector(".order-delete")){
+                    // Adds its click event
                     elem.querySelector(".order-delete").addEventListener("click", function(){
+                        // Remove the pizza
                         elem.remove()
+                        // Re-operate the total amount because it has changed
+                        getTotal()
                     })
                 }
-                getTotal()
             }
                         
+            // Disables the sup ingredients that are already in the pizza / elem = the triggered pizza / objPizza = the select tag
             function setIngredientsForPizza(elem, objPizzas){
+                // For each of the options
                 Object.keys(objPizzas).forEach(function(pizza){
+                    // Get the selected pizza
                     if(objPizzas[pizza].selected === true){
+                        // Get the converted value of the array of the ingredients ids sets in an attribute in the pizza's option tag
                         let ingredientsinPizza = JSON.parse(objPizzas[pizza].attributes['ingredients'].value)
+                        // For each ingredients of the pizza
                         ingredientsinPizza.forEach(function(ingredientInPizza){
+                            // Gets all of the ingredients in the choice list
                             let ingredientsButtons = elem.querySelector(".order-ingredients").children
+                            // For each of the ingredients buttons
                             Object.keys(ingredientsButtons).forEach(function(ingredientButton){
+                                // If the ingredient button correspond to one of the ingredients of the pizza
                                 if(ingredientInPizza === (ingredientsButtons[ingredientButton].innerText)){
+                                    // Disables it
                                     ingredientsButtons[ingredientButton].classList.add("disabled")
                                 }
                             })
                         })
                     }
                 })
-                
-                getTotal()
             }
 
+            // Function that re-enables the disabled or choosen ingredients buttons
             function resetIngredientsForPizza(elem){
+                // So for each disabled button
                 elem.querySelectorAll(".disabled").forEach(function(ingredientsToEnable){
+                    // Remove the disable class
                     ingredientsToEnable.classList.remove("disabled")
                 })
+                // So for each choosen ingredients
                 elem.querySelectorAll(".ingredient-active").forEach(function(buttonToDisable){
+                    // Remove the selected class
                     buttonToDisable.classList.remove("ingredient-active")
                 })
-                
+                // The total amount has changed
                 getTotal()
             }
 
+            // Function that enables-disables the sup ingredients
             function addSupIngredients(elem){
+                // for each ingredient buttons
                 elem.querySelectorAll(".order-ingredients-buttons").forEach(function(button){
+                    // if not disabled (because is not part of the actual pizza)
                     if(!button.classList.contains("disabled")){
+                        // Add the clickable event
                         button.addEventListener("click", function(){
+                            // Toggle the class "active"
                             button.classList.toggle("ingredient-active")
+                            // The total amount has changed
                             getTotal()
                         })
                     }
                 })
             }
 
+            // Resets the changements when the selected pizza has changed
             function setSelectPizza(elem){
+                // For each "orderItem"
                 let objPizzas = elem.querySelector("select")
+                // When the pizza has changed
                 objPizzas.addEventListener("change", function(){
+                    // Resets its buttons
                     resetIngredientsForPizza(elem)
+                    // Re-disables the pizza's actual ingredients
                     setIngredientsForPizza(elem, objPizzas)
                     })
+                // Does it one time when first launched
                 setIngredientsForPizza(elem, objPizzas)
             }
             
+            // Gives the event function to the "orderItems"
             function setsFunctions(elem){
                 setsDeletePizza(elem)
                 setSelectPizza(elem)
                 addSupIngredients(elem)
             }
 
+            // Select the first pizza in the order
             const PIZZA_FORM = document.querySelector(".order-pizza")
+            // Give its event functions
             setsFunctions(PIZZA_FORM)
 
+            // Selects the "+" button, and adds on more item
             document.querySelector(".order-add-pizza").addEventListener("click", function(){
+                // Clone the first item
                 let newPizzaForm = PIZZA_FORM.cloneNode(true)
+                // Sets its event functions
                 setsFunctions(newPizzaForm)
+                // Append it in the DOM
                 document.querySelector(".pizzas").appendChild(newPizzaForm)
+                // The total amount has changed
                 getTotal();
             })
 
+            // Events given to the delivery options
             let deliveryButtons = document.querySelectorAll(".order-details")
+            // For each delivry options
             deliveryButtons.forEach(function(deliveryButton){
+                // Add a click event
                 deliveryButton.addEventListener("click", function(){
+                    // If not activated
                     if(!deliveryButton.classList.contains("order-details-active")){
+                        // Toggle the classes for the options
                         deliveryButtons.forEach(function(againButtons){
+                            // Do the change
                             againButtons.classList.toggle("order-details-active")
                         })
                     }
+                    // The total amount has changed
                     getTotal()
                 })
             })
 
+        // Get the date format of "today"
             let reservationDate = new Date()
+            // Let's correct the month
             let correctMonth = reservationDate.getUTCMonth(this) + 1
+            // Sets the Date, Month and Year to the correct inputs
             document.querySelector("#order_date #order_date_date_day").value = reservationDate.getUTCDate(this)
             document.querySelector("#order_date #order_date_date_day").setAttribute("readonly", true)
             document.querySelector("#order_date #order_date_date_month").value = correctMonth
@@ -206,11 +272,13 @@
             document.querySelector("#order_date #order_date_date_year").value = reservationDate.getUTCFullYear(this)
             document.querySelector("#order_date #order_date_date_year").setAttribute("readonly", true)
 
+            // Format our hours schedules
             document.querySelector("#order_date #order_date_time_hour").childNodes.forEach(function(hour){
+                // Disables the older hours
                 if(reservationDate.getHours(this) > hour.value){ 
                     hour.setAttribute("disabled", true)
                 }
-                
+                // DIsables hours when not in service
                 if (hour.value <= 11 && hour.value >= 0){
                     hour.setAttribute("disabled", true)
                 } else if(hour.value >= 14 && hour.value <= 17){
@@ -219,12 +287,19 @@
                     hour.setAttribute("disabled", true)
                 }
             })
+            // Select our schedule for each 10 minutes
             document.querySelector("#order_date #order_date_time_minute").childNodes.forEach(function(minute){
-                if(minute.value % 5 > 0){
+                // Disables the older minutes
+                if(reservationDate.getMinutes(this) > minute.value){ 
+                    minute.setAttribute("disabled", true)
+                }
+                // Setting a 10 minutes/order schedule
+                if(minute.value % 10 > 0){
                     minute.setAttribute("disabled", true)
                 }
             })
             
+            // Set the total for the first time
             getTotal()
 
         });

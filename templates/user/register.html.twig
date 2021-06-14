@@ -84,27 +84,44 @@
 
 {% block javascripts %}
     <script>
+    // When docuemnt has loaded
         $('document').ready(function(){
-            
+            // A little bit sketchy...
             document.querySelector('form').classList.add("form-row")
             document.querySelectorAll('.form-group input').forEach(function(elem){elem.classList.add("form-control")})
 
+        // Toggle visibility for the password
+            // When the button is clicked
             document.querySelector("#register-reveal-password").addEventListener("mousedown", function(){
+                // disables the button original function
+                event.preventDefault()
+                // Select the input of the password
                 let password = document.querySelector("#register_password")
+                // If is password type
                 if(password.type === "password"){
+                    // Change the icon to the "eye-slash"
                     this.innerHTML = '<i class="fas fa-eye-slash"></i>'
+                    // Turns it into a text input
                     password.type = "text"
                 }else{
+                    // Change the icon to the classic "eye"
                     this.innerHTML = '<i class="fas fa-eye"></i>'
+                    // Turns it back to a password type
                     password.type = "password"
                 }
             })
 
+        // Enables the register button as the CGU checkbox is checked
+            // When click on the CGU box
             document.querySelector("#register-cgu").addEventListener("click", function(){
+                // Get the "register" button
                 let submit = document.querySelector("#register-submit")
+                // If the CGU box is not checked
                 if(this.checked !== true){
+                    // Gie it a disabled attribute
                     submit.setAttribute("disabled", "")
                 }else{
+                    // If not, remove the disabled attribute
                     submit.removeAttribute("disabled")
                 }
             })

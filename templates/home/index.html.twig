@@ -44,12 +44,19 @@
 
 {% block javascripts %}
     <script>
+    // When document has loaded
         $(document).ready(function(){
+            // Create the carousel
             $(".review-carousel").owlCarousel({
+                // 2 items at the time
                 items: 2,
+                // de facto margin
                 margin: 15,
+                // loop it
                 loop: true,
+                // no menu
                 dots: false,
+                // autoplay as you read
                 autoplay: true,
             });
         });

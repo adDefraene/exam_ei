@@ -36,17 +36,27 @@
 
 {% block javascripts %}
 <script>
+// When document loaded
     $('document').ready(function(){    
+        // Function that gives an array in JSON of the ids of the pizza selected for the PROMO
+        // When somthing has changed in the select
         document.querySelector("#exampleFormControlSelect2").addEventListener("change", function(select){
+            // Init the array to convert in JSON
             var arrayOfIds = [];
+            // Get the options of the select
             let selects = select.target.children;
+            // For each of the options
             Object.keys(selects).forEach(element => {
+                // If is selected
                 if(selects[element].selected === true){
+                    // Pushes it in the array
                     arrayOfIds.push(selects[element].value)
                 }
             });
 
+            //Convert our array
             let arrayInJson = JSON.stringify(arrayOfIds)
+            // Give it as the value of the "custom" field of the unique form
             document.querySelector("#admin_promo_pizzasToPromo").value = arrayInJson
         })
     });

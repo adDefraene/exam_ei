@@ -15,14 +15,6 @@
                     </div>
                     <div class="card-body">
                         {{form_widget(myForm)}}
-                        {#
-                            <label for="exampleFormControlSelect2">Ingrédients :</label>
-                            <select multiple class="form-control" id="exampleFormControlSelect2">
-                                {% for ingredient in ingredients %}
-                                    <option value="{{ingredient.id}}">{{ingredient.name}}</option>
-                                {% endfor %}
-                            </select>
-                        #}
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-check"></i>
                             Créer
@@ -40,25 +32,13 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script>
-    /*
-    $('document').ready(function(){    
-        document.querySelector("#exampleFormControlSelect2").addEventListener("change", function(select){
-            let selects = select.target.children
-            Object.
-            document.querySelector("#admin_pizza_ingredientsJson").value = select.value
-        })
-    })
-    */
+    // Gets all the fields from an Entity and puts them in a multiple select tag
         $(function () {
             $('.select-tags').select2({
                 tags: true,
                 tokenSeparators: [',', ' ']
             }).on('change', function (e) {
-                //je recupere ce qui a été saisi (objet)
                 let label = $(this).find("[data-select2-tag=true]");
-
-                //permet de pas rajouter plusieurs fois le meme tag dans la BDD
-                //je verifie qu'il y a bien un element && si il existe deja dans la bdd
                 if (label.length && $.inArray(label.val(), $(this).val() !== -1)) {
                     $.ajax({
                         url: "/admin/pizza/add/ajax" + label.val(),
@@ -71,6 +51,5 @@
             });
             ;
         })
-
     </script>
 {% endblock %}
