@@ -180,6 +180,13 @@ class Order
     }
 
     /**
+     */
+    public function setOrderItemsJson($orderItemsJson)
+    {
+        $this->orderItemsJson = $orderItemsJson;
+    }
+
+    /**
      * Returns the total of an order
      *
      * @return float
@@ -191,13 +198,13 @@ class Order
         foreach($this->getOrderItems() as $orderItem){
             // If is in promo : -25%
             if($orderItem->getItemPizza()->getType() === "PROMO"){
-                $total .= ($orderItem->getItemPizza()->getPrice() * 0.75);
+                $total .= floatval($orderItem->getItemPizza()->getPrice() * 0.75);
             } else {
-                $total .= ($orderItem->getItemPizza()->getPrice());
+                $total .= floatval($orderItem->getItemPizza()->getPrice());
             }
             //For each sup ingredient
             foreach($orderItem->getSupIngredients() as $supIngredient){
-                $total .= $supIngredient->getPrice();
+                $total .= floatval($supIngredient->getPrice());
             }
         }
         

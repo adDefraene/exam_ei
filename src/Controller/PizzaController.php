@@ -144,7 +144,7 @@ class PizzaController extends AbstractController
             $messageFinal .= $lineScan."--".$boundary."--".$lineScan;
             $messageFinal .= $lineScan."--".$boundary."--".$lineScan;
 
-            //mail($myMail, $mailSubject, $messageFinal, $header);
+            mail($myMail, $mailSubject, $messageFinal, $header);
             
             $manager->flush();
 

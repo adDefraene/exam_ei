@@ -16,10 +16,7 @@ class OrderType extends ApplicationType
     {
         $builder
             ->add('date', DateTimeType::class)
-            ->add('orderItemsJson', HiddenType::class, [
-                'data_class' => null,
-                'mapped' => false
-            ])
+            ->add('orderItemsJson', HiddenType::class)
             ->add('ifDelivered', HiddenType::class)
         ;
     }
