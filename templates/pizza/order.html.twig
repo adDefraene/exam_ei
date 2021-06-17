@@ -113,10 +113,10 @@
                 if(document.querySelector("#order-delivered").classList.contains("order-details-active")){
                     // If delivered
                     total += 3 // Adds the 3€ fees to the total amount
-                    document.querySelector("#order_ifDelivered").value = true // sets the "true" value for the "ifDelivered" field
+                    document.querySelector("#order_ifDelivered").value = 1 // sets the "true" value for the "ifDelivered" field
                 } else{
                     // If take-away
-                    document.querySelector("#order_ifDelivered").value = false // sets the "false" value for the "ifDelivered" field
+                    document.querySelector("#order_ifDelivered").value = 0 // sets the "false" value for the "ifDelivered" field
                 }
 
                 // Round the total amount
