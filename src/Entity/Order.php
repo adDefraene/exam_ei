@@ -198,7 +198,7 @@ class Order
         foreach($this->getOrderItems() as $orderItem){
             // If is in promo : -25%
             if($orderItem->getItemPizza()->getType() === "PROMO"){
-                $total .= floatval($orderItem->getItemPizza()->getPrice() * 0.75);
+                $total .= floatval($orderItem->getItemPizza()->getPrice()) * 0.75;
             } else {
                 $total .= floatval($orderItem->getItemPizza()->getPrice());
             }
