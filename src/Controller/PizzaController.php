@@ -75,17 +75,17 @@ class PizzaController extends AbstractController
                 $itemPrice = 0;
 
                 $formMessage .= "<b>".$pizzaRepo->findPizzaById($orderItem->pizzaId)->getName()."</b>";
-                $itemPrice .= $pizzaRepo->findPizzaById($orderItem->pizzaId)->getPrice();
+                $itemPrice += $pizzaRepo->findPizzaById($orderItem->pizzaId)->getPrice();
 
                 $item->setItemPizza($pizzaRepo->findPizzaById($orderItem->pizzaId));
                 foreach($orderItem->ingredients as $ingredient){
                     $item->addSupIngredient($ingredientRepo->findIngredientById($ingredient));
                     $formMessage .= "<i>+ ".$ingredientRepo->findIngredientById($ingredient)->getName()."</i>";
-                    $itemPrice .= $ingredientRepo->findIngredientById($ingredient)->getPrice();
+                    $itemPrice += $ingredientRepo->findIngredientById($ingredient)->getPrice();
                 }
 
                 $formMessage .= "<u> = ".$itemPrice." </u><br>";
-                $orderTotal .= $itemPrice;
+                $orderTotal += $itemPrice;
 
                 $manager->persist($item);
                 $order->addOrderItem($item);
@@ -94,7 +94,7 @@ class PizzaController extends AbstractController
 
             if($order->getIfDelivered()){
                 $formMessage .= "<br><b>La commande sera livrée (+3€) à :";
-                $orderTotal .= 3;
+                $orderTotal += 3;
             } else {
                 $formMessage .= "<br><b>La commande sera à emporter à :";
             }
