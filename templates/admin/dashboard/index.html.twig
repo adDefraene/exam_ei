@@ -101,7 +101,7 @@
                         {% endfor %}
                     </div>
                     <div class="alert alert-danger">
-                        TOTAL = {{order.getTotal | format_currency('EUR', {rounding_mode: 'ceil'})}} | Commande : {% if order.ifDelivered %}Livrée au {{order.customer.address}} {{order.customer.city}}{% else %}Retirée au comptoir{% endif %}
+                        TOTAL = {{order.getTotal | format_currency('EUR', {rounding_mode: 'floor'})}} | Commande : {% if order.ifDelivered %}Livrée au {{order.customer.address}} {{order.customer.city}}{% else %}Retirée au comptoir{% endif %}
                     </div>
                     <a href="{{path('admin_order_ready', {'id':order.id})}}" class="btn btn-success">Commande préparée !</a>
                 </div>
