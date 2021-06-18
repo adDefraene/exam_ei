@@ -7,6 +7,7 @@ use App\Entity\Pizza;
 use App\Form\OrderType;
 use App\Entity\OrderItem;
 use App\Repository\IngredientRepository;
+use App\Repository\OrderRepository;
 use App\Repository\PizzaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,10 +48,11 @@ class PizzaController extends AbstractController
      * 
      * @IsGranted("ROLE_USER")
      */
-    public function order(Request $request, EntityManagerInterface $manager, PizzaRepository $pizzaRepo, IngredientRepository $ingredientRepo): Response
+    public function order(Request $request, EntityManagerInterface $manager, PizzaRepository $pizzaRepo, IngredientRepository $ingredientRepo, OrderRepository $orderRepo): Response
     {
         $pizzas = $pizzaRepo->findAll();
         $ingredients = $ingredientRepo->findAll();
+        $orders = $orderRepo->getTodayOrders();
 
         $order = new Order();
         $user = $this->getUser();
@@ -160,6 +162,7 @@ class PizzaController extends AbstractController
             'orderForm' => $form->createView(),
             'pizzas' => $pizzas,
             'ingredients' => $ingredients,
+            'orders' => $orders
         ]);
     }    
 }

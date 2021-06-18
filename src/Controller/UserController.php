@@ -147,7 +147,7 @@ class UserController extends AbstractController
     public function profileReview(Order $order, Request $request, EntityManagerInterface $manager): Response
     {
         $ifReview = $order->getReview();
-        if($ifReview || $order->getState() !== "DELIVERED"){
+        if($ifReview || $order->getState() !== "READY"){
             $this->addFlash(
                 'danger',
                 'Cette évaluation a déjà été réalisée !'

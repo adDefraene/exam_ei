@@ -2,6 +2,10 @@
 
 {% block title %}Commander{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="/css/jquery.timepicker.css">
+{% endblock %}
+
 {% block body %}
     <div class="container-fluid">
         <h1>ORDER</h1>
@@ -23,7 +27,6 @@
                                                 ingredients="{{pizza.getIngredientsJSON}}"
                                             >{{pizza.name}}{% if pizza.type == "POTM" %} (PDM){% endif %}
                                             </option>
-                                            {{dump(pizza.ingredients)}}
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -70,6 +73,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script src="/js/jquery.timepicker.min.js"></script>
     <script>
     // When document has loaded
         $('document').ready(function(){
@@ -167,6 +171,7 @@
                         })
                     }
                 })
+                
             }
 
             // Function that re-enables the disabled or choosen ingredients buttons
@@ -180,6 +185,7 @@
                 elem.querySelectorAll(".ingredient-active").forEach(function(buttonToDisable){
                     // Remove the selected class
                     buttonToDisable.classList.remove("ingredient-active")
+                    buttonToDisable.removeEventListener('click')
                 })
                 // The total amount has changed
                 getTotal()
@@ -190,7 +196,7 @@
                 // for each ingredient buttons
                 elem.querySelectorAll(".order-ingredients-buttons").forEach(function(button){
                     // if not disabled (because is not part of the actual pizza)
-                    if(!button.classList.contains("disabled")){
+                    if(button.classList.contains("disabled") === false){
                         // Add the clickable event
                         button.addEventListener("click", function(){
                             // Toggle the class "active"
@@ -212,6 +218,8 @@
                     resetIngredientsForPizza(elem)
                     // Re-disables the pizza's actual ingredients
                     setIngredientsForPizza(elem, objPizzas)
+                    // Re-triggers the sup ingredients
+                    addSupIngredients(elem)
                     })
                 // Does it one time when first launched
                 setIngredientsForPizza(elem, objPizzas)
@@ -262,6 +270,35 @@
 
         // Get the date format of "today"
             let reservationDate = new Date()
+
+        /*
+            $("#hourPicker").timepicker({
+                'disableTextInput' : true,
+                'useSelect' : true,
+                'timeFormat' : "H:i",
+                'minTime': '11:30am',
+                'maxTime': '10:00pm',
+                'step' : 15,
+                'disableTimeRanges' : [
+                    ['2pm', '5:45pm'],
+                ]
+            });
+
+            let hourPicker = document.querySelector(".ui-timepicker-select")
+
+            
+            //{% for order in orders %}
+            Object.keys(hourPicker).forEach(function(item){
+
+                let getDisabledHour = '20:45';
+                if(hourPicker[item].value === getDisabledHour ){
+                    hourPicker[item].setAttribute("disabled", "")
+                }
+            })
+            //{% endfor %}
+
+            document.querySelector("#order_date").value = reservationDate;
+        */
             // Let's correct the month
             let correctMonth = reservationDate.getUTCMonth(this) + 1
             // Sets the Date, Month and Year to the correct inputs
@@ -289,16 +326,11 @@
             })
             // Select our schedule for each 10 minutes
             document.querySelector("#order_date #order_date_time_minute").childNodes.forEach(function(minute){
-                // Disables the older minutes
-                if(reservationDate.getMinutes(this) > minute.value){ 
-                    minute.setAttribute("disabled", true)
-                }
                 // Setting a 10 minutes/order schedule
                 if(minute.value % 10 > 0){
                     minute.setAttribute("disabled", true)
                 }
             })
-            
             // Set the total for the first time
             getTotal()
 
