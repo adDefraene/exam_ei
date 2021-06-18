@@ -100,7 +100,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            {% else %}
+                            {% elseif order.state == "READY" %}
                                 {% set reviewUrl = path('user_review', {'id': order.id}) %}
                                 <div class="col-6 profile-review">
                                     <div class="row my-2 p-2">
