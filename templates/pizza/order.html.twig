@@ -57,7 +57,11 @@
                         <div class="col-12 p-3 my-3 text-center order-hour">
                             <div class="row">
                                 <div class="col">HEURE DE RÉSERVATION</div>
-                                <div class="col">
+                                <div class="col row">
+                                    <i class="col-6">aujourd'hui à :</i>
+                                    <input class="col-6" type="text" id="hourPicker">
+                                </div>
+                                <div class="col" style="display:none">
                                     {{form_widget(orderForm.date)}}
                                 </div>
                             </div>
@@ -266,10 +270,10 @@
                 })
             })
 
-        // Get the date format of "today"
-            let reservationDate = new Date()
 
-        /*
+
+
+        // Get the date format of "today"
             $("#hourPicker").timepicker({
                 'disableTextInput' : true,
                 'useSelect' : true,
@@ -284,51 +288,54 @@
 
             let hourPicker = document.querySelector(".ui-timepicker-select")
 
-            
-            //{% for order in orders %}
-            Object.keys(hourPicker).forEach(function(item){
+            hourPicker.querySelectorAll("option").forEach(function(hourCell){
+                let now = new Date();
 
-                let getDisabledHour = '20:45';
-                if(hourPicker[item].value === getDisabledHour ){
-                    hourPicker[item].setAttribute("disabled", "")
-                }
-            })
-            //{% endfor %}
+                let getCellHour = hourCell.value.slice(0, hourCell.value.length-3)
+                let getCellMinute = hourCell.value.slice(3)
 
-            document.querySelector("#order_date").value = reservationDate;
-        */
-            // Let's correct the month
-            let correctMonth = reservationDate.getUTCMonth(this) + 1
-            // Sets the Date, Month and Year to the correct inputs
-            document.querySelector("#order_date #order_date_date_day").value = reservationDate.getUTCDate(this)
-            document.querySelector("#order_date #order_date_date_day").setAttribute("readonly", true)
-            document.querySelector("#order_date #order_date_date_month").value = correctMonth
-            document.querySelector("#order_date #order_date_date_month").setAttribute("readonly", true)
-            document.querySelector("#order_date #order_date_date_year").value = reservationDate.getUTCFullYear(this)
-            document.querySelector("#order_date #order_date_date_year").setAttribute("readonly", true)
+                if(getCellHour < now.getHours(now)){
+                    hourCell.setAttribute("disabled", "")
+                } else if(getCellHour == now.getHours(now) && getCellMinute < now.getMinutes(now)){
+                    hourCell.setAttribute("disabled", "")
+                }
 
-            // Format our hours schedules
-            document.querySelector("#order_date #order_date_time_hour").childNodes.forEach(function(hour){
-                // Disables the older hours
-                if(reservationDate.getHours(this) > hour.value){ 
-                    hour.setAttribute("disabled", true)
-                }
-                // DIsables hours when not in service
-                if (hour.value <= 11 && hour.value >= 0){
-                    hour.setAttribute("disabled", true)
-                } else if(hour.value >= 14 && hour.value <= 17){
-                    hour.setAttribute("disabled", true)
-                } else if (hour.value >= 22){   
-                    hour.setAttribute("disabled", true)
-                }
+                {% for order in orders %}
+                    if(getCellHour == {{order.date | date("H")}} && getCellMinute == {{order.date | date("i")}} )
+                    {
+                    hourCell.setAttribute("disabled", "")
+                    }
+                {% endfor %}
+
+
             })
-            // Select our schedule for each 10 minutes
-            document.querySelector("#order_date #order_date_time_minute").childNodes.forEach(function(minute){
-                // Setting a 10 minutes/order schedule
-                if(minute.value % 10 > 0){
-                    minute.setAttribute("disabled", true)
-                }
+
+            hourPicker.addEventListener("change", function () {
+
+                hourPicker.querySelectorAll("option").forEach(function(hourSelected){
+
+                    if(hourSelected.selected === true){
+
+                        let getReservedHour = hourSelected.value
+
+                        let reservationDate = new Date()
+
+                        let getHour = getReservedHour.slice(0, getReservedHour.length-3)
+                        let getMinute = getReservedHour.slice(3)
+
+                        reservationDate.setHours(parseInt(getHour))
+                        reservationDate.setMinutes(parseInt(getMinute))
+                        reservationDate.setSeconds(0)
+
+                        document.querySelector("#order_date_date_year").value = reservationDate.getFullYear()
+                        document.querySelector("#order_date_date_month").value =  (reservationDate.getMonth()+1)
+                        document.querySelector("#order_date_date_day").value =  reservationDate.getDate()
+                        document.querySelector("#order_date_time_hour").value =  reservationDate.getHours()
+                        document.querySelector("#order_date_time_minute").value =  reservationDate.getMinutes()
+                    }
+                })
             })
+
             // Set the total for the first time
             getTotal()
 

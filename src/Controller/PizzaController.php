@@ -60,6 +60,7 @@ class PizzaController extends AbstractController
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
 
+        dump($form->getData());
         if($form->isSubmitted() && $form->isValid()){
             $order->setCustomer($user)
                 ->setState("ORDERED")
@@ -146,7 +147,7 @@ class PizzaController extends AbstractController
             $messageFinal .= $lineScan."--".$boundary."--".$lineScan;
             $messageFinal .= $lineScan."--".$boundary."--".$lineScan;
 
-            mail($myMail, $mailSubject, $messageFinal, $header);
+            //mail($myMail, $mailSubject, $messageFinal, $header);
             
             $manager->flush();
 
