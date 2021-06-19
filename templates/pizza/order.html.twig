@@ -167,6 +167,7 @@
                                     // Disables it
                                     ingredientsButtons[ingredientButton].classList.add("disabled")
                                 }
+                                getTotal()
                             })
                         })
                     }
@@ -185,7 +186,6 @@
                 elem.querySelectorAll(".ingredient-active").forEach(function(buttonToDisable){
                     // Remove the selected class
                     buttonToDisable.classList.remove("ingredient-active")
-                    buttonToDisable.removeEventListener('click')
                 })
                 // The total amount has changed
                 getTotal()
@@ -195,16 +195,16 @@
             function addSupIngredients(elem){
                 // for each ingredient buttons
                 elem.querySelectorAll(".order-ingredients-buttons").forEach(function(button){
-                    // if not disabled (because is not part of the actual pizza)
-                    if(button.classList.contains("disabled") === false){
-                        // Add the clickable event
-                        button.addEventListener("click", function(){
+                    // Add the clickable event
+                    button.addEventListener("click", function lol (event){
+                        // if not disabled (because is not part of the actual pizza)
+                        if(!event.explicitOriginalTarget.classList.contains("disabled")){
                             // Toggle the class "active"
-                            button.classList.toggle("ingredient-active")
+                            event.explicitOriginalTarget.classList.toggle("ingredient-active")
                             // The total amount has changed
-                            getTotal()
-                        })
-                    }
+                        }
+                        getTotal()
+                    })
                 })
             }
 
@@ -218,8 +218,6 @@
                     resetIngredientsForPizza(elem)
                     // Re-disables the pizza's actual ingredients
                     setIngredientsForPizza(elem, objPizzas)
-                    // Re-triggers the sup ingredients
-                    addSupIngredients(elem)
                     })
                 // Does it one time when first launched
                 setIngredientsForPizza(elem, objPizzas)
