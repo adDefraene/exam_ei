@@ -59,8 +59,7 @@ class PizzaController extends AbstractController
 
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
-
-        dump($form->getData());
+        
         if($form->isSubmitted() && $form->isValid()){
             $order->setCustomer($user)
                 ->setState("ORDERED")
