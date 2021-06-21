@@ -70,16 +70,16 @@ nav a{
 }
 
 nav img{
-    width: 80%;
-    height: auto;
+    width: auto;
+    height: 75px;
 }
 
 .menu-button{
     display: block;
     width: 100%;
-    height: 50px;
+    align-self: center;
     border-radius: 10px;
-    line-height: 50px;
+    font-weight: var(--font-bold);
     background-color: var(--orange);
     color: var(--white);
 }

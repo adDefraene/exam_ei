@@ -1,31 +1,34 @@
-<nav class="container-fluid">
-    <ul class="row">
-        <li class="col-1 offset-3">
-            <a href="{{path('home')}}">ACCUEIL</a>
+<nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand mr-5" href="{{path('home')}}">
+        <img src="/images/Pizza_Puzzle1.png" alt="Logo Pizzle's">
+    </a>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="{{path('home')}}">ACCUEIL</a>
         </li>
-        <li class="col-1">
-            <a href="#">À PROPOS</a>
+        <li class="nav-item">
+            <a class="nav-link" href="{{path('menu')}}">MENU</a>
         </li>
-        <li class="col-2">
-            <img src="/images/Pizza_Puzzle1.png" alt="Logo Pizzle's">
+        <li class="nav-item mx-3">
+            <a class="nav-link btn menu-button" href="{{path('order')}}">COMMANDER</a>
         </li>
-        <li class="col-1">
-            <a href="{{path('menu')}}">MENU</a>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+    {% if app.user %}
+        <li class="nav-item dropdown dropleft ml-auto">
+            <a class="nav-link dropdown-toggle btn menu-button" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{app.user.evaluationName}}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{{path('user_profile')}}">MON COMPTE</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{path('user_logout')}}">DECONNEXION</a>
+            </div>
         </li>
-        <li class="col-1">
-            <a href="{{path('order')}}" class="menu-button">COMMANDER</a>
+    {% else %}
+        <li class="nav-item ml-auto">
+            <a class="nav-link btn menu-button" href="{{path('user_login')}}">CONNEXION</a>
         </li>
-        {% if app.user %}
-            <li class="col-1 offset-1">
-                <a href="{{path('user_profile')}}" class="menu-button">MON COMPTE</a>
-            </li>
-            <li class="col-1">
-                <a href="{{path('user_logout')}}" class="menu-button">DÉCONNEXION</a>
-            </li>
-        {% else %}
-            <li class="col-2 offset-1">
-                <a href="{{path('user_login')}}" class="menu-button">SE CONNECTER</a>
-            </li>
-        {% endif %}
+    {% endif %}
     </ul>
 </nav>
