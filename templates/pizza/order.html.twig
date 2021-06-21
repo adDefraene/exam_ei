@@ -200,11 +200,11 @@
                 // for each ingredient buttons
                 elem.querySelectorAll(".order-ingredients-buttons").forEach(function(button){
                     // Add the clickable event
-                    button.addEventListener("click", function(event){
+                    button.addEventListener("click", function(){
                         // if not disabled (because is not part of the actual pizza)
-                        if(!event.explicitOriginalTarget.classList.contains("disabled")){
+                        if(!button.classList.contains("disabled")){
                             // Toggle the class "active"
-                            event.explicitOriginalTarget.classList.toggle("ingredient-active")
+                            button.classList.toggle("ingredient-active")
                             // The total amount has changed
                         }
                         getTotal()
