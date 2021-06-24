@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegisterType;
+use App\Form\AdminUserType;
 use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AdminUserController extends AbstractController
 {
@@ -40,13 +42,24 @@ class AdminUserController extends AbstractController
       * @param EntityManagerInterface $manager
       * @return Response
       */
-    public function edit(User $user, Request $req, EntityManagerInterface $manager): Response
+    public function edit(User $user, Request $req, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder): Response
     {
-        $form = $this->createForm(RegisterType::class, $user);
+        $form = $this->createForm(AdminUserType::class, $user);
         $form->handleRequest($req);
+
+        $oldPassword = $user->getPassword();
 
         if($form->isSubmitted() && $form->isValid())
         {
+            if($form->getData()->getPassword() === ""){
+                $user->setPassword($oldPassword);
+            }else{
+                $newPassword = $form->getData()->getPassword();
+                $hash = $encoder->encodePassword($user, $newPassword);
+
+                $user->setPassword($hash);
+            }
+
             $manager->persist($user);
             $manager->flush();
 
