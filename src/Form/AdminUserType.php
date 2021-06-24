@@ -43,7 +43,6 @@ class AdminUserType extends ApplicationType
                     "Villers-Notre-Dame" => "Villers-Notre-Dame",
                     "Villers-Saint-Amand" => "Villers-Saint-AMand"]
             ]))
-            ->add('password',PasswordType::class, $this->getConfiguration("MOT DE PASSE", "Veuillez entrer un mot de passe"))
             ->add('Roles', ChoiceType::class, $this->getConfiguration("RÔLE", "", [
                 'choices' => [
                     "User" => "ROLE_USER",
@@ -52,18 +51,18 @@ class AdminUserType extends ApplicationType
             ]))
         ;
 
-                // Data transformer
-                $builder->get('Roles')
-                ->addModelTransformer(new CallbackTransformer(
-                    function ($rolesArray) {
-                         // transform the array to a string
-                         return count($rolesArray)? $rolesArray[0]: null;
-                    },
-                    function ($rolesString) {
-                         // transform the string back to an array
-                         return [$rolesString];
-                    }
-            ));
+        // Data transformer
+        $builder->get('Roles')
+        ->addModelTransformer(new CallbackTransformer(
+            function ($rolesArray) {
+                    // transform the array to a string
+                    return count($rolesArray)? $rolesArray[0]: null;
+            },
+            function ($rolesString) {
+                    // transform the string back to an array
+                    return [$rolesString];
+            }
+        ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

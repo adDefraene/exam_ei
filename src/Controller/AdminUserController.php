@@ -42,7 +42,7 @@ class AdminUserController extends AbstractController
       * @param EntityManagerInterface $manager
       * @return Response
       */
-    public function edit(User $user, Request $req, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder): Response
+    public function edit(User $user, Request $req, EntityManagerInterface $manager): Response
     {
         $form = $this->createForm(AdminUserType::class, $user);
         $form->handleRequest($req);
@@ -51,15 +51,7 @@ class AdminUserController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
-            if($form->getData()->getPassword() === ""){
-                $user->setPassword($oldPassword);
-            }else{
-                $newPassword = $form->getData()->getPassword();
-                $hash = $encoder->encodePassword($user, $newPassword);
-
-                $user->setPassword($hash);
-            }
-
+            $user->setPassword($oldPassword);
             $manager->persist($user);
             $manager->flush();
 
