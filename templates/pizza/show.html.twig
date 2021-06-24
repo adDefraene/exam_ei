@@ -9,7 +9,7 @@
             <div class="col-4 offset-2 px-5">
                 <img
                 class="pizza-image mt-5"
-                src="{% if '://' in pizza.image %}{{pizza.image}}{% else %}images/{{pizza.image}}{% endif %}"
+                src="{% if '://' in pizza.image %}{{pizza.image}}{% else %}/images/{{pizza.image}}{% endif %}"
                 alt="Image de la pizza {{ pizza.name }}">
             </div>
             <div class="col-4">
