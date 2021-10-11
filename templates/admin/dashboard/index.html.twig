@@ -11,24 +11,10 @@
 {% block body %}
     <div class="container-fluid">
         <div class="row my-5">
-            <div class="col">
-                <div class="cards bg-primary text-white mb-3 text-center">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-4">
-                                <i class="fas fa-users fa-3x"></i>
-                            </div>
-                            <div class="col-8">
-                               <a href="{{path('admin_user_index')}}"><h4 class="card-title">{{stats.users}} utilisateurs</h4></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
+            <div class="col-6">
                 <div class="cards bg-warning text-white mb-3 text-center">
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row align-items-center">
                             <div class="col-4">
                                 <i class="fas fa-pizza-slice fa-3x"></i>
                             </div>
@@ -39,10 +25,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-6">
                 <div class="cards bg-danger text-white mb-3 text-center">
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row align-items-center">
                             <div class="col-4">
                                 <i class="fas fa-pepper-hot fa-3x"></i>
                             </div>
@@ -53,10 +39,24 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-4">
+                <div class="cards bg-primary text-white mb-3 text-center">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <i class="fas fa-users fa-3x"></i>
+                            </div>
+                            <div class="col-8">
+                               <a href="{{path('admin_user_index')}}"><h4 class="card-title">{{stats.users}} utilisateurs</h4></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
                 <div class="cards bg-secondary text-white mb-3 text-center">
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row align-items-center">
                             <div class="col-4">
                                 <i class="fas fa-paper-plane fa-3x"></i>
                             </div>
@@ -67,10 +67,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="cards bg-success text-white mb-3 text-center">
+            <div class="col-4">
+                <div class="cards bg-info text-white mb-3 text-center">
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row align-items-center">
                             <div class="col-4">
                                 <i class="fas fa-comments fa-3x"></i>
                             </div>
@@ -101,7 +101,7 @@
                         {% endfor %}
                     </div>
                     <div class="alert alert-danger">
-                        TOTAL = {{order.getTotal | format_currency('EUR', {rounding_mode: 'floor'})}} | Commande : {% if order.ifDelivered %}Livrée au {{order.customer.address}} {{order.customer.city}}{% else %}Retirée au comptoir{% endif %}
+                        TOTAL = {{order.total | format_currency('EUR', {rounding_mode: 'floor'})}} | Commande : {% if order.ifDelivered %}Livrée au {{order.customer.address}} {{order.customer.city}}{% else %}Retirée au comptoir{% endif %}
                     </div>
                     <a href="{{path('admin_order_ready', {'id':order.id})}}" class="btn btn-success">Commande préparée !</a>
                 </div>

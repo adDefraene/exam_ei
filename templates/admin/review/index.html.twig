@@ -5,7 +5,7 @@
 {% block body %}
     <div class="container-fluid">
         <h1 class="my-5">Gestion des reviews</h1>
-        <table class="table table-hover">
+        <table class="table table-hover table-striped">
             <thead>
                 <tr>
                     <th>Id</th>
@@ -14,8 +14,7 @@
                     <th>Note qualité</th>
                     <th>Note service</th>
                     <th>Note ponctualité</th>
-                    <th>Note totale</th>
-                    <th class="text-center">Actions</th>
+                    <th class="text-center">Note moyenne</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,13 +23,21 @@
                         <td>{{review.id}}</td>
                         <td>{{review.reviewedOrder.customer.evaluationName}}</td>
                         <td>{{review.review}}</td>
-                        <td>{{review.starsQuality}}</td>
-                        <td>{{review.starsService}}</td>
-                        <td>{{review.starsPunctuality}}</td>
-                        <td>{{review.averageRating}}</td>
+                        <td>
+                            <span class="badge badge-warning p-2">{{review.starsQuality}} / 10</span>
+                        </td>
+                        <td>
+                            <span class="badge badge-warning p-2">{{review.starsService}} / 10</span>
+                        </td>
+                        <td>
+                            <span class="badge badge-warning p-2">{{review.starsPunctuality}} / 10</span>
+                        </td>
                         <td class="text-center">
-                            <a href="{{path('admin_reviews_edit', {'id':review.id})}}" class="btn btn-success"><i class="fas fa-edit"></i></a>
-                            <a href="{{path('admin_reviews_delete',{'id':review.id})}}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                            {% if review.averageRating <= 5 %}
+                                <span class="badge badge-danger p-2">{{review.averageRating}} / 10</span>
+                            {% else %}
+                                <span class="badge badge-success p-2">{{review.averageRating}} / 10</span>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

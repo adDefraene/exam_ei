@@ -59,6 +59,11 @@ class Order
      */
     private $orderItemsJson;
 
+    /**
+     * @ORM\Column(type="decimal", precision=5, scale=2)
+     */
+    private $total;
+
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
@@ -191,7 +196,18 @@ class Order
      *
      * @return float
      */
-    public function getTotal(){
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Sets automatically the total from the ordered elements
+     *
+     * @return float
+     */
+    public function setTotal()
+    {
         $total = 0;
 
         // For each pizza ordered
@@ -207,9 +223,13 @@ class Order
                 $total += floatval($supIngredient->getPrice());
             }
         }
-        
-        // Returns it
-        return $total;
+
+        if($this->getIfDelivered()){
+            $total += 3;
+        }
+         
+        // Sets it
+        $this->total = $total;
     }
 
 }

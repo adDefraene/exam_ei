@@ -151,7 +151,7 @@ class PaginationService {
         // dans la limite d'éléments imposée (voir propriété $limit)
         return $this->manager
                         ->getRepository($this->entityClass)
-                        ->findBy([], [], $this->limit, $offset);
+                        ->findBy([], ['id'=>'DESC'], $this->limit, $offset);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\StatsService;
 use App\Repository\OrderRepository;
+use App\Repository\ReviewRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +15,7 @@ class AdminDashboardController extends AbstractController
     /**
      * @Route("/admin/dashboard", name="admin_dashboard")
      */
-    public function index(StatsService $service, OrderRepository $repo): Response
+    public function index(StatsService $service, OrderRepository $orderRepo): Response
     {
         $users = $service->getUsersCount();
         $pizzas = $service->getPizzaCount();
@@ -22,7 +23,7 @@ class AdminDashboardController extends AbstractController
         $orders = $service->getOrderCount();
         $reviews = $service->getReviewsCount();
 
-        $ordersToday = $repo->getTodayOrders();
+        $ordersToday = $orderRepo->getTodayOrders();
 /*
         $bestReviews = $service->getReviewsStats("ASC");
         $worstReviews = $service->getReviewsStats("DESC");
@@ -52,9 +53,9 @@ class AdminDashboardController extends AbstractController
       * @param EntityManagerInterface $manager
       * @return Response
       */
-      public function promos($id, EntityManagerInterface $manager, OrderRepository $repo): Response
+      public function promos($id, EntityManagerInterface $manager, OrderRepository $orderRepo): Response
       {
-            $order = $repo->findOneById($id);   
+            $order = $orderRepo->findOneById($id);   
             $order->setState("READY");
             $manager->persist($order);
             $manager->flush();

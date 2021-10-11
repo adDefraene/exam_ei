@@ -9,6 +9,7 @@ use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Entity\Pizza;
 use App\Entity\Review;
+use App\Repository\PizzaRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -45,7 +46,7 @@ class AppFixtures extends Fixture
         $cities = ["Ath","Arbre","Bouvignies","Ghislenghien","Gibecq","Houtaing","Irchonwelz","Isières","Lanquesaint","Ligne","Maffle","Mainvault","Meslin-L'Évèque","Moulbaix","Ormeignies","Ostiches","Rebaix","Villers-Notre-Dame",
         "Villers-Saint-Amand"];
 
-        for($u=1; $u<=10; $u++){
+        for($u=1; $u<=30; $u++){
             $user = new User;
             $gender = $faker->randomElement($genders);
             
@@ -64,12 +65,13 @@ class AppFixtures extends Fixture
 
     // Ingredients management
         $ingredients = []; // Array initialized for the pizzas & supIngredients
-        $ingredientsNames = $faker->words(14, false); // Array of the ingredients names
+        $ingredientsNames = $faker->words(30, false); // Array of the ingredients names
 
         foreach($ingredientsNames as $ingredientName){
             $ingredient = new Ingredient;
             $ingredient->setName($ingredientName)
-                ->setPrice(rand(2,20)/10);
+                ->setPrice(rand(2,20)/10)
+                ->setImage('https://picsum.photos/id/'.$faker->numberBetween(1,200).'/50/50');
             
             $manager->persist($ingredient);
 
@@ -80,7 +82,7 @@ class AppFixtures extends Fixture
         $pizzas = []; // Array initialized for the orders
         $pizza_promo = 0; // Counter of the promo pizzas
 
-        for($p=1; $p<=12; $p++){
+        for($p=1; $p<=14; $p++){
             $pizza = new Pizza;
 
         // Basic settings
@@ -97,18 +99,16 @@ class AppFixtures extends Fixture
             }
 
         // Defining the pizza type
-            // If first pizza => this is the Pizza of the month
             if($p === 1){
+            // If first pizza => this is the Pizza of the month
                 $pizza->setType("POTM");
-            }else{
-                // If the three next pizzas, pizzas in promo
-                if($pizza_promo <= 2){
+            }else if($pizza_promo <= 2){
+            // If the three next pizzas, pizzas in promo
                     $pizza->setType("PROMO");
                     $pizza_promo++;
-                }else{
-                // If not, classic pizza without promo
+            }else{
+            // If not, classic pizza without promo
                     $pizza->setType("CLASSIC");
-                }
             }
 
             $manager->persist($pizza);
@@ -118,12 +118,14 @@ class AppFixtures extends Fixture
 
     // Orders management
         
-        for($o=1; $o <= 20; $o++){
+        for($o=1; $o <= 99; $o++){
             $order = new Order;
+            $order_chance = (rand()%2);
 
             $order->setState("DELIVERED")
                 ->setCustomer($faker->randomElement($users))
                 ->setDate($faker->dateTimeBetween('-1 months'))
+                ->setIfDelivered($order_chance)
                 ;
 
             // Adding orders items
@@ -151,6 +153,8 @@ class AppFixtures extends Fixture
 
                 $order->addOrderItem($orderItem);
             }
+
+            $order->setTotal();
 
             // Adding or not a review
 

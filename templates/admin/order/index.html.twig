@@ -4,15 +4,16 @@
 
 {% block body %}
     <div class="container-fluid">
-        <h1 class="my-5">Gestion des commandes</h1>
-        <table class="table table-hover">
+        <h1 class="my-5">Liste des commandes</h1>
+        <table class="table table-hover table-striped">
             <thead>
                 <tr>
                     <th>Id</th>
                     <th>Date</th>
                     <th>Client</th>
+                    <th>Livraison</th>
                     <th>État</th>
-                    <th class="text-center">Actions</th>
+                    <th>Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,9 +22,16 @@
                         <td>{{order.id}}</td>
                         <td>{{order.date | date('Y-m-d H:i')}}</td>
                         <td>{{order.customer.firstName}} {{order.customer.lastName}}</td>
+                        <td>
+                            {% if order.ifDelivered %}
+                            LIVRAISON
+                            {% else %}
+                            DÉPÔT
+                            {% endif %}
+                        </td>
                         <td>{{order.state}}</td>
-                        <td class="text-center">
-                            <a href="{{path('admin_order_delete',{'id':order.id})}}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                        <td>
+                            <span class="badge badge-primary p-1">{{order.total}}€</span>
                         </td>
                     </tr>
                 {% endfor %}
