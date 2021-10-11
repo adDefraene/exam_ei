@@ -25,7 +25,7 @@ security:
                 check_path: admin_account_login
             logout:
                 path: admin_account_logout
-                target: home  
+                target: admin_account_login  
         main:
             lazy: true
             provider: app_user_provider
