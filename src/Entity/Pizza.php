@@ -3,11 +3,17 @@
 namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PizzaRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -17,6 +23,21 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *  fields={"name"},
  *  message="Une autre pizza possède déjà ce nom, merci de le modifier"
  * )
+ * 
+ * @ApiResource(
+ *      collectionOperations={"GET"},
+ *      itemOperations={"GET"},
+ *      normalizationContext={
+ *          "groups"={"pizzas_read"}
+ *      },
+ *      attributes={
+ *          "order"={"type":"desc","price":"asc"}
+ *      }
+ * )
+ * @ApiFilter(
+ *      SearchFilter::class,
+ *      properties={"type"}
+ * )
  */
 class Pizza
 {
@@ -24,44 +45,55 @@ class Pizza
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"pizzas_read", "orders_read"})
+     * @ApiProperty(identifier=false)
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min=5, max=30, minMessage="Nom trop court", maxMessage="Nom trop long")
+     * @Groups({"pizzas_read", "orders_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\Length(min=75, minMessage="Intro trop courte")
+     * @Groups({"pizzas_read"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="decimal", precision=4, scale=2)
+     * @Groups({"pizzas_read"})
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Groups({"pizzas_read", "orders_read"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      * @Assert\Image(mimeTypes={"image/png", "image/jpeg", "image/jpg", "image/gif"}, mimeTypesMessage="Vous devez upload un fichier jpg, png ou gif")
+     * @Groups({"pizzas_read"})
      */
     private $image;
 
     /**
      * @ORM\ManyToMany(targetEntity=Ingredient::class, cascade={"detach"})
+     * @Groups({"pizzas_read"})
+     * @ApiSubresource
      */
     private $ingredients;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"pizzas_read"})
+     * @ApiProperty(identifier=true)
      */
     private $slug;
 

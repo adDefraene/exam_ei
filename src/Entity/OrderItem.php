@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use App\Repository\OrderItemRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=OrderItemRepository::class)
@@ -27,11 +28,13 @@ class OrderItem
 
     /**
      * @ORM\ManyToOne(targetEntity=Pizza::class, cascade={"detach"})
+     * @Groups({"orders_read"})
      */
     private $itemPizza;
 
     /**
      * @ORM\ManyToMany(targetEntity=Ingredient::class, cascade={"detach"})
+     * @Groups({"orders_read"})
      */
     private $supIngredients;
 

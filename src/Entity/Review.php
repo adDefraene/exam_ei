@@ -2,12 +2,26 @@
 
 namespace App\Entity;
 
-use App\Repository\ReviewRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ReviewRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ReviewRepository::class)
+ * @ApiResource(
+ *      collectionOperations={"GET"},
+ *      itemOperations={"GET"},
+ *      normalizationContext={
+ *          "groups"={"orders_read"}
+ *      },
+ *      attributes={
+ *          "order"={"reviewedOrder.date":"desc"},
+ *          "pagination_enabled"=true,
+ *          "pagination_items_per_page"=6
+ *      }
+ * )
  */
 class Review
 {
@@ -26,21 +40,25 @@ class Review
     /**
      * @ORM\Column(type="text")
      * @Assert\Length(max=120, maxMessage="Évalutation trop longue")
+     * @Groups({"orders_read"})
      */
     private $review;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"orders_read"})
      */
     private $starsQuality;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"orders_read"})
      */
     private $starsService;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"orders_read"})
      */
     private $starsPunctuality;
 
@@ -111,6 +129,7 @@ class Review
 
     /**
      * Gets the average notes of the notes
+     * @Groups({"orders_read"})
      *
      * @return float
      */

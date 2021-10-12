@@ -7,12 +7,37 @@ use Doctrine\ORM\Mapping\OneToOne;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\PersistentCollection;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Action\NotFoundAction;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
  * @ORM\Table(name="`order`")
+ * 
+ * @ApiResource(
+ *      attributes={
+ *          "order"={"id":"desc"}
+ *      },
+ *      collectionOperations={"GET"},
+ *      itemOperations={"GET"},
+ *      normalizationContext={
+ *          "groups"={"orders_read"}
+ *      }
+ * )
+ * @ApiFilter(
+ *      SearchFilter::class,
+ *      properties={"state"}
+ * )
+ * @ApiFilter(
+ *      OrderFilter::class,
+ *      properties={"date"}
+ * )
  */
 class Order
 {
@@ -20,11 +45,13 @@ class Order
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"orders_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"orders_read"})
      */
     private $state;
 
@@ -36,21 +63,25 @@ class Order
 
     /**
      * @ORM\OneToOne(targetEntity=Review::class, mappedBy="reviewedOrder", cascade={"persist", "remove"})
+     * @Groups({"orders_read"}))
      */
     private $review;
 
     /**
      * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="itemOrder",  cascade={"persist", "remove"})
+     * @Groups({"orders_read"})
      */
     private $orderItems;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"orders_read"})
      */
     private $date;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"orders_read"})
      */
     private $ifDelivered;
 
@@ -61,6 +92,7 @@ class Order
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @Groups({"orders_read"})
      */
     private $total;
 
