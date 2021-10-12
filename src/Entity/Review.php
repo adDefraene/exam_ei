@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReviewRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -16,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      normalizationContext={
  *          "groups"={"orders_read"}
  *      },
+ *      denormalizationContext={"disable_type_enforcement"=true} ,
  *      attributes={
  *          "order"={"reviewedOrder.date":"desc"},
  *          "pagination_enabled"=true,
@@ -39,6 +41,7 @@ class Review
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="Le texte de l'évaluation est obligatoire")
      * @Assert\Length(max=120, maxMessage="Évalutation trop longue")
      * @Groups({"orders_read"})
      */
@@ -46,18 +49,21 @@ class Review
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank(message="La note de qualité est obligatoire")
      * @Groups({"orders_read"})
      */
     private $starsQuality;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank(message="La note du service est obligatoire")
      * @Groups({"orders_read"})
      */
     private $starsService;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank(message="La note de la ponctualité est obligatoire")
      * @Groups({"orders_read"})
      */
     private $starsPunctuality;
@@ -96,7 +102,7 @@ class Review
         return $this->starsQuality;
     }
 
-    public function setStarsQuality(float $starsQuality): self
+    public function setStarsQuality($starsQuality): self
     {
         $this->starsQuality = $starsQuality;
 
@@ -108,7 +114,7 @@ class Review
         return $this->starsService;
     }
 
-    public function setStarsService(float $starsService): self
+    public function setStarsService($starsService): self
     {
         $this->starsService = $starsService;
 
@@ -120,7 +126,7 @@ class Review
         return $this->starsPunctuality;
     }
 
-    public function setStarsPunctuality(float $starsPunctuality): self
+    public function setStarsPunctuality($starsPunctuality): self
     {
         $this->starsPunctuality = $starsPunctuality;
 
