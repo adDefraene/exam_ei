@@ -56,7 +56,7 @@ class AdminDashboardController extends AbstractController
       public function promos($id, EntityManagerInterface $manager, OrderRepository $orderRepo): Response
       {
             $order = $orderRepo->findOneById($id);   
-            $order->setState("READY");
+            $order->setState("DONE");
             $manager->persist($order);
             $manager->flush();
         

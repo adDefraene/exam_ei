@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=ReviewRepository::class)
  * @ApiResource(
- *      collectionOperations={"GET"},
+ *      collectionOperations={"GET", "POST"},
  *      itemOperations={"GET"},
  *      normalizationContext={
  *          "groups"={"orders_read"}

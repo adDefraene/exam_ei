@@ -24,7 +24,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      attributes={
  *          "order"={"id":"desc"}
  *      },
- *      collectionOperations={"GET"},
+ *      collectionOperations={"GET", "POST"},
  *      itemOperations={"GET"},
  *      normalizationContext={
  *          "groups"={"orders_read"}
