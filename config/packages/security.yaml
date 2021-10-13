@@ -67,6 +67,6 @@ security:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY}
         - { path: ^/api/orders, roles: IS_AUTHENTICATED_FULLY, methods:[GET,POST]}
         - { path: ^/api/users, roles: IS_AUTHENTICATED_FULLY, methods:[GET,POST,PUT]}
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY}
+        - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY}
         # - { path: ^/mon_compte, roles: ROLE_USER }
         # - { path: ^/order, roles: ROLE_USER }
