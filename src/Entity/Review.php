@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      collectionOperations={"GET", "POST"},
  *      itemOperations={"GET"},
  *      normalizationContext={
- *          "groups"={"orders_read"}
+ *          "groups"={"reviews_read"}
  *      },
  *      denormalizationContext={"disable_type_enforcement"=true} ,
  *      attributes={
@@ -31,11 +31,13 @@ class Review
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"reviews_read"})
      */
     private $id;
 
     /**
      * @ORM\OneToOne(targetEntity=Order::class, inversedBy="review", cascade={"detach"})
+     * @Groups({"reviews_read"})
      */
     private $reviewedOrder;
 
@@ -43,7 +45,7 @@ class Review
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Le texte de l'évaluation est obligatoire")
      * @Assert\Length(max=120, maxMessage="Évalutation trop longue")
-     * @Groups({"orders_read"})
+     * @Groups({"orders_read", "reviews_read"})
      */
     private $review;
 
@@ -135,7 +137,7 @@ class Review
 
     /**
      * Gets the average notes of the notes
-     * @Groups({"orders_read"})
+     * @Groups({"reviews_read"})
      *
      * @return float
      */

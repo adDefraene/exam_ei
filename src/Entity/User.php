@@ -264,6 +264,8 @@ class User implements UserInterface
 
     /**
      * Gets the name for the evaluation box on the home page
+     * 
+     * @Groups({"reviews_read"})
      *
      * @return string
      */ 
