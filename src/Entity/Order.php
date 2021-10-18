@@ -76,7 +76,7 @@ class Order
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"orders_read"})
+     * @Groups({"orders_read", "reviews_read"})
      */
     private $date;
 
