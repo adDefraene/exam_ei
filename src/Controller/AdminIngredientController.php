@@ -106,6 +106,28 @@ class AdminIngredientController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
+            // Get the image data
+            $file = $form['image']->getData();
+            // If not empty
+            if(!empty($file)){
+                // Get a new image treatment
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+                try{
+                    $file->move(
+                        $this->getParameter('uploads_directory'),
+                        $newFilename
+                    );
+                }
+                catch(FileException $e)
+                {
+                    return $e->getMessage();
+                }
+
+                $ingredient->setImage($newFilename);
+            }
+            
             $manager->persist($ingredient);
             $manager->flush();
 
