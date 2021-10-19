@@ -147,7 +147,11 @@ class Pizza
 
     public function getPrice(): ?string
     {
-        return $this->price;
+        if($this->getType() === "PROMO"){
+            return round($this->price * 0.75, 2);
+        }else{
+            return $this->price;
+        }
     }
 
     public function setPrice(string $price): self
