@@ -30,13 +30,13 @@ class PasswordEncoderSubscriber implements EventSubscriberInterface
         ]; 
     }
     
-    public function encodePassword(ViewEvent  $event){ 
+    public function encodePassword(ViewEvent  $event){
         $user = $event->getControllerResult(); // récupérer l'objet désérialisé   
         $method = $event->getRequest()->getMethod(); // pour connaitre la méthode 
 
         /* vérifier quand la requête envoie un User et qu'elle est de type POST */ 
-        if($user instanceof User && ($method === "POST" || $method === "PATCH")){ 
-            $hash = $this->encoder->encodePassword($user, $user->getPassword()); 
+        if($user instanceof User && ($method === "POST" || $method === "PUT")){
+            $hash = $this->encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash); 
         }  
     } 
