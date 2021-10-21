@@ -137,7 +137,7 @@ class Review
 
     /**
      * Gets the average notes of the notes
-     * @Groups({"reviews_read"})
+     * @Groups({"reviews_read", "orders_read"})
      *
      * @return float
      */
