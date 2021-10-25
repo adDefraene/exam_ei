@@ -19,6 +19,7 @@ security:
         registration:
             pattern: ^/api/users
             lazy: true
+            anonymous: true
             stateless: true
             methods: [POST]
         login:
