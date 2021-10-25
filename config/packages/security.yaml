@@ -18,9 +18,9 @@ security:
             security: false
         registration:
             pattern: ^/api/users
+            lazy: true
             stateless: true
             methods: [POST]
-            jwt: ~
         login:
             pattern: ^/api/login
             stateless: true
