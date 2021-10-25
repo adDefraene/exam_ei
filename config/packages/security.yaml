@@ -20,6 +20,7 @@ security:
             pattern: ^/api/users
             stateless: true
             methods: [POST]
+            jwt: ~
         login:
             pattern: ^/api/login
             stateless: true
