@@ -27,8 +27,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  * 
  * @ApiResource(
  *      denormalizationContext={"disable_type_enforcement"=true},
- *      collectionOperations={"GET", "POST"},
- *      itemOperations={"GET", "PATCH"},
+ *      collectionOperations={"get", "post"},
+ *      itemOperations={"get", "patch"},
  * )
  */
 class User implements UserInterface
