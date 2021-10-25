@@ -19,6 +19,7 @@ security:
         registration:
             pattern: ^/api/users
             stateless: true
+            lazy: true
             methods: [POST]
         login:
             pattern: ^/api/login
@@ -73,6 +74,7 @@ security:
         - { path: ^/api/reviews, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [GET]}
         - { path: ^/api/reviews, roles: IS_AUTHENTICATED_FULLY, methods: [POST]}
         - { path: ^/api/orders, roles: IS_AUTHENTICATED_FULLY, methods: [GET,POST]}
+        - { path: ^/api/users, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [POST]}
         - { path: ^/api/users, roles: IS_AUTHENTICATED_FULLY, methods: [GET,PUT]}
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY}
         # - { path: ^/mon_compte, roles: ROLE_USER }
