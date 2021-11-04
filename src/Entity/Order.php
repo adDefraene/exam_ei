@@ -32,7 +32,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * )
  * @ApiFilter(
  *      SearchFilter::class,
- *      properties={"state"}
+ *      properties={"state"="exact", "date"="partial"}
  * )
  * @ApiFilter(
  *      OrderFilter::class,
