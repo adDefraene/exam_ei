@@ -88,6 +88,9 @@ class User implements UserInterface
      */
     private $orders;
 
+    public $oldPassword;
+    public $newPassword;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
