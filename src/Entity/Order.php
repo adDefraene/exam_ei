@@ -245,14 +245,13 @@ class Order
 
         // For each pizza ordered
         foreach($this->getOrderItems() as $orderItem){
-            // If is in promo : -25%
-            if($orderItem->getItemPizza()->getType() === "PROMO"){
-                $total += floatval($orderItem->getItemPizza()->getPrice()) * 0.75;
-            } else {
-                $total += floatval($orderItem->getItemPizza()->getPrice());
-            }
+            // Adds its price
+            $total += floatval($orderItem->getItemPizza()->getPrice());
+            // I deleted the management of the PROMO, because the PROMO is already calculated in the POST Object deserialized
+
             //For each sup ingredient
             foreach($orderItem->getSupIngredients() as $supIngredient){
+                // Adds their price
                 $total += floatval($supIngredient->getPrice());
             }
         }
