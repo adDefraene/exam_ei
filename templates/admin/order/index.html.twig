@@ -11,6 +11,7 @@
                     <th>Id</th>
                     <th>Date</th>
                     <th>Client</th>
+                    <th>Pizzas</th>
                     <th>Livraison</th>
                     <th>État</th>
                     <th>Total</th>
@@ -19,9 +20,31 @@
             <tbody>
                 {% for order in pagination.data %}
                     <tr>
-                        <td>{{order.id}}</td>
+                        <td>#{{order.id}}</td>
                         <td>{{order.date | date('Y-m-d H:i')}}</td>
                         <td>{{order.customer.firstName}} {{order.customer.lastName}}</td>
+                        <td>
+                            <ul>
+                            {% for orderItem in order.orderItems %}
+                                <li><b>
+                                {% if orderItem.itemPizza.type == "POTM" %}
+                                Pizza du mois
+                                {% else %}
+                                {{orderItem.itemPizza.name}}
+                                {% endif %}
+                                </b></li>
+                                <ul>
+                                {% if orderItem.supIngredients|length > 0 %}
+                                    {% for supIngredient in orderItem.supIngredients %}
+                                        <li><i>+ {{supIngredient.name}}</i></li>
+                                    {% endfor %}
+                                {% else %}
+                                        <li><i>aucun ingrédient sup.</i></li>
+                                {% endif %}
+                                </ul>
+                            {% endfor %}
+                            </ul>
+                        </td>
                         <td>
                             {% if order.ifDelivered %}
                             LIVRAISON
