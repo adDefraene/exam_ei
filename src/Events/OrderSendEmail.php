@@ -4,9 +4,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\ViewEvent; 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Order;
-use App\Repository\IngredientRepository;
-use App\Repository\PizzaRepository;
-use App\Repository\UserRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface; 
  
 /**
@@ -24,7 +21,7 @@ class OrderSendEmail implements EventSubscriberInterface
     public static function getSubscribedEvents() 
     { 
         return [ 
-            KernelEvents::VIEW => ['setEmail',EventPriorities::POST_WRITE] 
+            KernelEvents::VIEW => ['setEmail', EventPriorities::POST_WRITE] 
         ]; 
     }
 
@@ -41,6 +38,7 @@ class OrderSendEmail implements EventSubscriberInterface
         /* Do the methods that defines the rest of the elements for wrinting the object */ 
         if($order instanceof Order && $method === "POST"){
             // MESSAGE FOR THE MAIL
+            /*
             $formMessage = "";
             $orderTotal = 0;
             
@@ -79,7 +77,7 @@ class OrderSendEmail implements EventSubscriberInterface
                     <p align="center" style="display:block;;height:auto;padding:15px 20px;background-color:#751b13;border-radius: 20px;">TOTAL : `. $orderTotal .`€</p>
                 </td>
             </tr>`;
-
+            */
         // SEND EMAIL
 
         //VARs
@@ -87,13 +85,16 @@ class OrderSendEmail implements EventSubscriberInterface
             $boundary = "-----=".md5(rand());
 
             $user = $order->getCustomer();
-            $formName = $user->getFirstName()." ".$user->getLastName();
+            //$formName = $user->getFirstName()." ".$user->getLastName();
+            $formName = "Adrien Defraene";
         
         //MY EMAIL ADDRESS
-            $formMail = $user->getEmail();
+            //$formMail = $user->getEmail();
+            $formMail = "adriendefraene@gmail.com";
             
         //SUBJECT OF THE MAIL
-            $mailSubject = " Commande de Pizzle's #". $order->getId() ." - ". $order->getDate()->format('Y-m-d H:i');
+            //$mailSubject = " Commande de Pizzle's #". $order->getId() ." - ". $order->getDate()->format('Y-m-d H:i');
+            $mailSubject = "Mail de test";
             
         //HEADER OF THE MAIL
             $header = "From: \"Pizzle's\"<hey@adriendefraene.be>".$lineScan;
@@ -102,6 +103,7 @@ class OrderSendEmail implements EventSubscriberInterface
             $header .= "Content-Type: multipart/alternative;".$lineScan." boundary=\"".$boundary."\"".$lineScan;
 
         //DEFINING THE MESSAGE
+        /*
             $message_html = `
                 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
                     <head>
@@ -172,13 +174,15 @@ class OrderSendEmail implements EventSubscriberInterface
                     </body>
                 </html>
             `;
+*/
+            $messageDeTest = "Oui, tu as bien reçu le mail!!!!";
 
         //DEFINING THE MESSAGE TO BE SENT
             //ADD MESSAGE IN HTML FORMAT
             $messageFinal = $lineScan."--".$boundary.$lineScan;
             $messageFinal .= "Content-Type: text/html; charset=\"ISO-8859-1\"".$lineScan;
             $messageFinal .= "Content-Transfer-Encoding: 8bit".$lineScan;
-            $messageFinal .= $lineScan.$message_html.$lineScan;
+            $messageFinal .= $lineScan.$messageDeTest.$lineScan;
             //END
             $messageFinal .= $lineScan."--".$boundary."--".$lineScan;
             $messageFinal .= $lineScan."--".$boundary."--".$lineScan;
