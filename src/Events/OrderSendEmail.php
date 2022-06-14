@@ -32,11 +32,11 @@ class OrderSendEmail implements EventSubscriberInterface
      * @return void
      */
     public function setEmail(ViewEvent  $event){ 
+        /*
         $order = $event->getControllerResult(); // récupérer l'objet désérialisé   
         $method = $event->getRequest()->getMethod(); // pour connaitre la méthode
-
+        */
         /* Do the methods that defines the rest of the elements for wrinting the object */ 
-        if($order instanceof Order && $method === "POST"){
             // MESSAGE FOR THE MAIL
             /*
             $formMessage = "";
@@ -84,7 +84,7 @@ class OrderSendEmail implements EventSubscriberInterface
             $lineScan = "\n";
             $boundary = "-----=".md5(rand());
 
-            $user = $order->getCustomer();
+            //$user = $order->getCustomer();
             //$formName = $user->getFirstName()." ".$user->getLastName();
             $formName = "Adrien Defraene";
         
@@ -98,7 +98,7 @@ class OrderSendEmail implements EventSubscriberInterface
             
         //HEADER OF THE MAIL
             $header = "From: \"Pizzle's\"<hey@adriendefraene.be>".$lineScan;
-            $header .= "Reply-to:\"".$formName."\"<".$user->getEmail().">".$lineScan;
+            $header .= "Reply-to:\"".$formName."\"<adriendefraene@gmail.com>".$lineScan;
             $header .= "MIME-Version: 1.0".$lineScan;
             $header .= "Content-Type: multipart/alternative;".$lineScan." boundary=\"".$boundary."\"".$lineScan;
 
@@ -188,7 +188,6 @@ class OrderSendEmail implements EventSubscriberInterface
             $messageFinal .= $lineScan."--".$boundary."--".$lineScan;
 
             mail($formMail, $mailSubject, $messageFinal, $header);
-        }  
     } 
 } 
 ?> 
