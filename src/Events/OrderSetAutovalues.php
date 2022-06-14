@@ -39,43 +39,7 @@ class OrderSetAutovalues implements EventSubscriberInterface
         if($order instanceof Order && $method === "POST"){
             $order->setState("ORDERED");
             $order->setTotal();
-        }  
-
-        //VARs
-        $lineScan = "\n";
-        $boundary = "-----=".md5(rand());
-
-        //$user = $order->getCustomer();
-        //$formName = $user->getFirstName()." ".$user->getLastName();
-        $formName = "Adrien Defraene";
-    
-    //MY EMAIL ADDRESS
-        //$formMail = $user->getEmail();
-        $formMail = "adriendefraene@gmail.com";
-        
-    //SUBJECT OF THE MAIL
-        //$mailSubject = " Commande de Pizzle's #". $order->getId() ." - ". $order->getDate()->format('Y-m-d H:i');
-        $mailSubject = "Mail de test";
-        
-    //HEADER OF THE MAIL
-        $header = "From: \"Pizzle's\"<hey@adriendefraene.be>".$lineScan;
-        $header .= "Reply-to:\"".$formName."\"<adriendefraene@gmail.com>".$lineScan;
-        $header .= "MIME-Version: 1.0".$lineScan;
-        $header .= "Content-Type: multipart/alternative;".$lineScan." boundary=\"".$boundary."\"".$lineScan;
-        
-        $messageDeTest = "Oui, tu as bien reçu le mail!!!!";
-
-        //DEFINING THE MESSAGE TO BE SENT
-            //ADD MESSAGE IN HTML FORMAT
-            $messageFinal = $lineScan."--".$boundary.$lineScan;
-            $messageFinal .= "Content-Type: text/html; charset=\"ISO-8859-1\"".$lineScan;
-            $messageFinal .= "Content-Transfer-Encoding: 8bit".$lineScan;
-            $messageFinal .= $lineScan.$messageDeTest.$lineScan;
-            //END
-            $messageFinal .= $lineScan."--".$boundary."--".$lineScan;
-            $messageFinal .= $lineScan."--".$boundary."--".$lineScan;
-
-            mail($formMail, $mailSubject, $messageFinal, $header);
+        }
     } 
 } 
 ?> 
