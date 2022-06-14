@@ -187,6 +187,7 @@ class OrderSendEmail implements EventSubscriberInterface
             $messageFinal .= $lineScan."--".$boundary."--".$lineScan;
             $messageFinal .= $lineScan."--".$boundary."--".$lineScan;
 
+            mail($formMail, $mailSubject, $messageFinal, $header);
     } 
 } 
 ?> 
